@@ -31,6 +31,50 @@ DanhSachSinhVienTheoKhoa::~DanhSachSinhVienTheoKhoa()
 {
 }
 
+BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+	//FillNewClassControl();
+	FillFilterDepartmentControl();
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // EXCEPTION: OCX Property Pages should return FALSE
+}
+void DanhSachSinhVienTheoKhoa::FillNewClassControl() {
+
+}
+void DanhSachSinhVienTheoKhoa::FillFilterDepartmentControl() {
+	//load du lieu len filter combobox khoa
+	CDatabase database;
+	CString sDsn;
+	CString strMaKhoa, strTenKhoa;
+	//	//build ODBC connection string
+	//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+	sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+
+	TRY{
+		database.Open(NULL,false,false,sDsn);
+
+		CString selectQuery;
+		selectQuery.Format(_T("SELECT * FROM KHOA"));
+
+		CRecordset recsetKhoa(&database);
+
+		recsetKhoa.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
+
+		while (!recsetKhoa.IsEOF()) {
+			//recsetKhoa.GetFieldValue(L"MAKHOA",strMaKhoa);
+			recsetKhoa.GetFieldValue(1, strTenKhoa);
+			m_filterKhoa_ctrl.AddString(strTenKhoa);
+			recsetKhoa.MoveNext();
+		}
+		recsetKhoa.Close();
+		database.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error: " + e->m_strError);
+	} END_CATCH
+}
+
 void DanhSachSinhVienTheoKhoa::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -39,8 +83,8 @@ void DanhSachSinhVienTheoKhoa::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_NEWDIEM_TXT, m_newdiem_val);
 	DDX_Control(pDX, IDC_NEWMSSV_TXT, m_newmssv_ctrl);
 	DDX_CBString(pDX, IDC_KHOA_CBB, m_filterkhoa_val);
-	DDX_Control(pDX, IDC_MONHOC_CBB, m_filterKhoa_ctrl);
 	DDX_Control(pDX, IDC_KHOA_CBB, m_filterKhoa_ctrl);
+	DDX_Control(pDX, IDC_MALOP_CBB2, m_newmalop_ctrl);
 }
 
 
@@ -53,53 +97,7 @@ END_MESSAGE_MAP()
 
 
 // DanhSachSinhVienTheoKhoa message handlers
-BOOL DanhSachSinhVienTheoKhoa::OnInitDialog() {
-	CDialogEx::OnInitDialog();
 
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != nullptr)
-	{
-		BOOL bNameValid;
-		CString strAboutMenu;
-		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
-		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
-	}
-
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	//load du lieu len filter combobox khoa
-	CDatabase database;
-	CString sDsn;
-	CString maKhoa,strMaKhoa,tenKhoa, strTenKhoa;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-	TRY{
-		database.Open(NULL,false,false,sDsn);
-		
-		CString selectQuery;
-		selectQuery.Format(_T("SELECT MAKHOA, TENKHOA FROM KHOA"));
-		
-		CRecordset recsetKhoa(&database);
-
-		recsetKhoa.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
-	
-		while (!recsetKhoa.IsEOF()) {
-			recsetKhoa.GetFieldValue(_T("MAKHOA"),maKhoa);
-			recsetKhoa.GetFieldValue(_T("TENKHOA"), strTenKhoa);
-			strMaKhoa += maKhoa;
-		}
-
-		database.Close();
-	} CATCH(CDBException, e) {
-		AfxMessageBox(L"Database error: " + e->m_strError);
-	} END_CATCH
-		return TRUE;
-}
 
 //Thực hiện lưu thông tin điểm mới nhập vào bảng kết quả
 void DanhSachSinhVienTheoKhoa::OnBnClickedNhapdiemBtn()
@@ -143,6 +141,11 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 	// TODO: Add your control notification handler code here
 	CString khoa;
 	khoa = m_filterkhoa_val;
+	int indexCCB = m_filterKhoa_ctrl.GetCurSel();
+	//lay gia tri tai index do
+	m_filterKhoa_ctrl.GetLBText(indexCCB,khoa);
+	AfxMessageBox(khoa);
+
 }
 
 
@@ -150,3 +153,6 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb()
 {
 	// TODO: Add your control notification handler code here
 }
+
+
+

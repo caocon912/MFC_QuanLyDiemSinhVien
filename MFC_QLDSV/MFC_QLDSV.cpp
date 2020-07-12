@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "MFC_QLDSV.h"
 #include "DanhSachSinhVienTheoKhoa.h"
+#include "MFC_ViewSinhVienDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

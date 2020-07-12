@@ -1,0 +1,3 @@
+﻿  DanhSachSinhVienTheoKhoa.cpp
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(117,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  MFC_QLDSV.vcxproj -> G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\x64\Debug\MFC_QLDSV.exe
