@@ -23,17 +23,31 @@ protected:
 public:
 	afx_msg void OnBnClickedNhapdiemBtn();
 	CString m_newmssv_val;
+	CComboBox m_newmalop_ctrl;
 	CString m_newmalop_val;
+	CString m_newtenlop_txt;
 	CString m_newdiem_val;
 	CEdit m_newmssv_ctrl;
 	CComboBox m_filterKhoa_ctrl;
 	CString m_filterkhoa_val;
-	CComboBox m_newmalop_ctrl;
+	CComboBox m_filterMonHoc_ctrl;
+	CComboBox m_filterMaLop_ctrl;
+	CListCtrl m_dssv_listctrl;
 	afx_msg void OnCbnSelchangeMonhocCbb();
 	afx_msg void OnEnChangeNewmssvTxt();
 	afx_msg void OnCbnSelchangeKhoaCbb();
-	
 	virtual BOOL OnInitDialog();
 	void FillNewClassControl();
 	void FillFilterDepartmentControl();
+	void FillFilterSubjectControl();
+	void FillFilterClassControl();
+	afx_msg void OnCbnSelchangeNewmalopCbb();
+	afx_msg void OnBnClickedXemchitietBtn();
+	afx_msg void OnBnClickedXemBtn();
+	afx_msg void OnBnClickedTimkiemsvBtn();
+private:
+	CString m_timkiemsv_txt;
+public:
+	afx_msg void OnLvnItemchangedDsdsvtkListctrl(NMHDR* pNMHDR, LRESULT* pResult);
+	CButton m_xemchitiet_ctrl;
 };

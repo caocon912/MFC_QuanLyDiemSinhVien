@@ -38,16 +38,23 @@
 #define IDC_MONHOC_CBB                  1025
 #define IDC_TIMKIEMSV_TXT               1026
 #define IDC_MONHOC_LBL2                 1027
+#define IDC_MALOP_LBL                   1027
 #define IDC_MALOP_CBB                   1028
 #define IDC_NEWMSSV_TXT                 1029
 #define IDC_NEWDIEM_TXT                 1030
 #define IDC_NHAPDIEMSV_GROUPBOX         1031
 #define IDC_DSND_LISTCTRL               1032
 #define IDC_MONHOC_LBL4                 1033
+#define IDC_MALOP_LBL2                  1033
 #define IDC_MALOP_CBB2                  1034
+#define IDC_NEWMALOP_CBB                1034
 #define IDC_MONHOC_LBL5                 1035
 #define IDC_MONHOC_LBL6                 1036
+#define IDC_DIEM_LBL                    1036
 #define IDC_XEMCHITIET_BTN              1037
+#define IDC_TENLOP_LBL                  1038
+#define IDC_NEWTENLOP_TXT               1039
+#define IDC_XEM_BTN                     1040
 
 // Next default values for new objects
 // 
@@ -55,7 +62,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
