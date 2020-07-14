@@ -207,6 +207,7 @@
     <ResourceCompile Include="MFCQLDSV.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource.hm" />
     <None Include="res\MFCQLDSV.rc2" />
   </ItemGroup>
   <ItemGroup>

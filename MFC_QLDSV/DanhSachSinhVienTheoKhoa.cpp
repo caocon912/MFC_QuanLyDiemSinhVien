@@ -5,7 +5,6 @@
 #include "MFC_QLDSV.h"
 #include "DanhSachSinhVienTheoKhoa.h"
 #include "afxdialogex.h"
-#include "afxdialogex.h"
 #include <sql.h>    
 #include <sqltypes.h> 
 #include <sqlext.h>  
@@ -26,6 +25,7 @@ DanhSachSinhVienTheoKhoa::DanhSachSinhVienTheoKhoa(CWnd* pParent /*=nullptr*/)
 	, m_newtenlop_txt(_T(""))
 	, m_newmalop_val(_T(""))
 	, m_timkiemsv_txt(_T(""))
+	, m_filterMonHoc_val(_T(""))
 {
 
 }
@@ -195,6 +195,7 @@ void DanhSachSinhVienTheoKhoa::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DSDSVTK_LISTCTRL, m_dssv_listctrl);
 	DDX_Text(pDX, IDC_TIMKIEMSV_TXT, m_timkiemsv_txt);
 	DDX_Control(pDX, IDC_XEMCHITIET_BTN, m_xemchitiet_ctrl);
+	DDX_CBString(pDX, IDC_MONHOC_CBB, m_filterMonHoc_val);
 }
 
 
@@ -208,10 +209,8 @@ BEGIN_MESSAGE_MAP(DanhSachSinhVienTheoKhoa, CDialogEx)
 	ON_BN_CLICKED(IDC_XEM_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn)
 	ON_BN_CLICKED(IDC_TIMKIEMSV_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DSDSVTK_LISTCTRL, &DanhSachSinhVienTheoKhoa::OnLvnItemchangedDsdsvtkListctrl)
+	ON_CBN_SELCHANGE(IDC_MALOP_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeMalopCbb)
 END_MESSAGE_MAP()
-
-
-// DanhSachSinhVienTheoKhoa message handlers
 
 
 //Thực hiện lưu thông tin điểm mới nhập vào bảng kết quả
@@ -236,7 +235,7 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedNhapdiemBtn()
 		AfxMessageBox(L"Đã thêm điểm cho sinh viên MSSV:"+m_newmssv_val);
 		database.Close();
 	} CATCH(CDBException, e) {
-		AfxMessageBox(L"Database error: " + e->m_strError);
+		AfxMessageBox(L"Database error of them moi diem cho sinh vien: " + e->m_strError);
 	} END_CATCH
 }
 
@@ -261,15 +260,91 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 	//lay gia tri tai index do
 	m_filterKhoa_ctrl.GetLBText(indexCCB,khoa);
 	
+	//load combobox Môn học và mã lớp
+	CDatabase database;
+	CString sDsn;
+	//build ODBC connection string
+	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+	TRY{
+		database.Open(NULL,false,false,sDsn);
+		CString selectQuery;
+		CString strMaMonHoc, strTenMonHoc, strMaLop, strTenLop;
+		selectQuery.Format(_T("select MAMH, TENMH from MONHOC where MAKHOA in (select MAKHOA from KHOA where TENKHOA = N'%s')"),khoa);
+	
+		CRecordset recset(&database);
 
+		recset.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
+
+		//reset combobox
+		m_filterMonHoc_ctrl.ResetContent();
+		
+		//loop all the row result
+		while (!recset.IsEOF()) { //EOF: end of file
+			recset.GetFieldValue(L"MAMH", strMaMonHoc);
+			recset.GetFieldValue(L"TENMH", strTenMonHoc);
+
+			m_filterMonHoc_ctrl.AddString(strTenMonHoc);
+			//Move next
+			recset.MoveNext();
+		}
+		m_filterMonHoc_ctrl.SetCurSel(0);
+		OnCbnSelchangeMonhocCbb();
+		recset.Close();
+		database.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error of combox mamh,malop: " + e->m_strError);
+	} END_CATCH
 }
-
 
 void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb()
 {
 	// TODO: Add your control notification handler code here
+	CString monHoc;
+	monHoc = m_filterMonHoc_val;
+	int indexCCB = m_filterMonHoc_ctrl.GetCurSel();
+	//lay gia tri tai index do
+	m_filterMonHoc_ctrl.GetLBText(indexCCB, monHoc);
+
+	//load combobox mã lớp
+	CDatabase database;
+	CString sDsn;
+	//build ODBC connection string
+	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+	TRY{
+		database.Open(NULL,false,false,sDsn);
+		CString selectQuery;
+		CString strMaLop, strTenLop;
+		selectQuery.Format(_T("select MALOP, TENLOP from LOP where MAMH in (select MAMH from MONHOC where TENMH = N'%s')"),monHoc);
+
+		CRecordset recset(&database);
+
+		recset.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
+
+		//reset combobox
+		m_filterMaLop_ctrl.ResetContent();
+
+		//loop all the row result
+		while (!recset.IsEOF()) { //EOF: end of file
+			recset.GetFieldValue(L"MALOP", strMaLop);
+			recset.GetFieldValue(L"TENLOP", strTenLop);
+
+			m_filterMaLop_ctrl.AddString(strMaLop);
+			//Move next
+			recset.MoveNext();
+		}
+		m_filterMaLop_ctrl.SetCurSel(0);
+		recset.Close();
+		database.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error of combox malop: " + e->m_strError);
+	} END_CATCH
 }
 
+
+void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMalopCbb()
+{
+	// TODO: Add your control notification handler code here
+}
 
 void DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb()
 {
@@ -324,6 +399,8 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 
 		recsetSV.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
 
+		//reset content of listcontrol
+		m_dssv_listctrl.DeleteAllItems();
 
 		int iSinhVien = 0;
 		//loop all the row result
@@ -406,12 +483,8 @@ void DanhSachSinhVienTheoKhoa::OnLvnItemchangedDsdsvtkListctrl(NMHDR* pNMHDR, LR
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
-	int rowSelectedIndex = m_dssv_listctrl.GetSelectionMark();
-	if (m_dssv_listctrl.GetSelectionMark() == -1) {
-		m_xemchitiet_ctrl.EnableWindow(FALSE);
-	}
-	else
-	{
-		int rowSelectedIndex = m_dssv_listctrl.GetSelectionMark();
-	}
+	
 }
+
+
+

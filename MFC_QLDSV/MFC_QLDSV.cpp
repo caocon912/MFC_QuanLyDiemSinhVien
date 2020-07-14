@@ -71,7 +71,7 @@ BOOL CMFCQLDSVApp::InitInstance()
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
-
+	
 	DanhSachSinhVienTheoKhoa dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();

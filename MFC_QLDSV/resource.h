@@ -33,6 +33,7 @@
 #define IDC_SAVEEDIT_BTN                1020
 #define IDC_KHOA_CBB                    1021
 #define IDC_NHAPDIEM_BTN                1022
+#define IDC_TIMKIEMMH_BTN               1022
 #define IDC_TIMKIEMSV_BTN               1023
 #define IDC_MONHOC_LBL                  1024
 #define IDC_MONHOC_CBB                  1025
@@ -62,7 +63,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        136
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1051
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -45,9 +45,10 @@ public:
 	afx_msg void OnBnClickedXemchitietBtn();
 	afx_msg void OnBnClickedXemBtn();
 	afx_msg void OnBnClickedTimkiemsvBtn();
-private:
-	CString m_timkiemsv_txt;
-public:
 	afx_msg void OnLvnItemchangedDsdsvtkListctrl(NMHDR* pNMHDR, LRESULT* pResult);
 	CButton m_xemchitiet_ctrl;
+	afx_msg void OnCbnSelchangeMalopCbb();
+	CString m_filterMonHoc_val;
+private:
+	CString m_timkiemsv_txt;
 };

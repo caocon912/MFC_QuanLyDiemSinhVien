@@ -1,5 +1,2 @@
-﻿  DanhSachSinhVienTheoKhoa.cpp
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(233,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  MFC_QLDSV.cpp
-  Generating Code...
+﻿  MFC_ViewSinhVienDlg.cpp
   MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QLDSV\x64\Debug\MFC_QLDSV.exe
