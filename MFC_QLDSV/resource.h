@@ -9,6 +9,8 @@
 #define IDR_MAINFRAME                   128
 #define IDD_DSDSV_DLG                   130
 #define IDD_DSND_DLG                    132
+#define IDD_MAIN_DLG                    136
+#define IDD_DSSVDlg                     138
 #define IDC_VIEWSV_LBL                  1000
 #define IDC_DIEMSV_LISTCRL              1001
 #define IDC_TENSV_LBL                   1002
@@ -56,14 +58,18 @@
 #define IDC_TENLOP_LBL                  1038
 #define IDC_NEWTENLOP_TXT               1039
 #define IDC_XEM_BTN                     1040
+#define IDC_QLSV_BTN                    1051
+#define IDC_CTDT_BTN                    1052
+#define IDC_DSDIEM_BTN                  1053
+#define IDC_LOGOUT_BTN                  1054
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        136
+#define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1051
+#define _APS_NEXT_CONTROL_VALUE         1056
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

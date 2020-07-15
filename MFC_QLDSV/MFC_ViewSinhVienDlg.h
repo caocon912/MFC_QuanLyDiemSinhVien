@@ -20,7 +20,11 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
+private:
+	CString mssv;
 public:
+	void SetMSSV(CString mssv);
+	CString GetMSSV();
 	afx_msg void OnBnClickedThemdiemBtn();
 	afx_msg void OnCbnSelchangeKhoaCbb();
 	CComboBox m_khoa_ctrl;
@@ -46,4 +50,6 @@ public:
 	CEdit m_pobsv_ctrl;
 	CEdit m_sdtsv_ctrl;
 	afx_msg void OnBnClickedSaveeditBtn();
+	void ResetControl();
+	afx_msg void OnBnClickedTimkiemmhBtn();
 };

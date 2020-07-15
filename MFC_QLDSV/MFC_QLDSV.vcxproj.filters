@@ -39,6 +39,12 @@
     <ClInclude Include="DanhSachSinhVienTheoKhoa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MainWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QLSV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_QLDSV.cpp">
@@ -54,6 +60,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DanhSachSinhVienTheoKhoa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QLSV.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

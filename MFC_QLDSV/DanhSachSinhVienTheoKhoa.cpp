@@ -41,6 +41,11 @@ BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
 	FillFilterDepartmentControl();
 	FillFilterSubjectControl();
 	FillFilterClassControl();
+
+	m_filterKhoa_ctrl.SetCurSel(0);
+	m_filterMonHoc_ctrl.SetCurSel(0);
+	m_filterMaLop_ctrl.SetCurSel(0);
+
 	ListView_SetExtendedListViewStyle(m_dssv_listctrl, LVS_EX_GRIDLINES);
 	m_dssv_listctrl.SetExtendedStyle(m_dssv_listctrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	//column width and heading
@@ -253,6 +258,7 @@ void DanhSachSinhVienTheoKhoa::OnEnChangeNewmssvTxt()
 
 void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 {
+	
 	// TODO: Add your control notification handler code here
 	CString khoa;
 	khoa = m_filterkhoa_val;
@@ -288,7 +294,10 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 			recset.MoveNext();
 		}
 		m_filterMonHoc_ctrl.SetCurSel(0);
+		m_filterMonHoc_ctrl.EnableWindow(TRUE);
+		
 		OnCbnSelchangeMonhocCbb();
+		
 		recset.Close();
 		database.Close();
 	} CATCH(CDBException, e) {
@@ -333,6 +342,7 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb()
 			recset.MoveNext();
 		}
 		m_filterMaLop_ctrl.SetCurSel(0);
+		m_filterMaLop_ctrl.EnableWindow();
 		recset.Close();
 		database.Close();
 	} CATCH(CDBException, e) {
@@ -359,7 +369,12 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb()
 void DanhSachSinhVienTheoKhoa::OnBnClickedXemchitietBtn()
 {
 	MFC_ViewSinhVien viewSVDlg;
+	//get select row
+	int rowSelected = m_dssv_listctrl.GetSelectionMark();
+	CString mssv = m_dssv_listctrl.GetItemText(rowSelected, 0);
+	viewSVDlg.SetMSSV(mssv);
 	viewSVDlg.DoModal();
+
 }
 
 
@@ -427,6 +442,7 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 		}
 		recsetSV.Close();
 		database.Close();
+		m_xemchitiet_ctrl.EnableWindow(TRUE);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 	} END_CATCH
@@ -483,7 +499,7 @@ void DanhSachSinhVienTheoKhoa::OnLvnItemchangedDsdsvtkListctrl(NMHDR* pNMHDR, LR
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
-	
+
 }
 
 
