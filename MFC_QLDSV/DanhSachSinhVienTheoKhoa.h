@@ -15,7 +15,8 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DSDSV_DLG };
 #endif
-
+private:
+	CString m_timkiemsv_txt;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -25,7 +26,6 @@ public:
 	CString m_newmssv_val;
 	CComboBox m_newmalop_ctrl;
 	CString m_newmalop_val;
-	CString m_newtenlop_txt;
 	CString m_newdiem_val;
 	CEdit m_newmssv_ctrl;
 	CComboBox m_filterKhoa_ctrl;
@@ -41,7 +41,6 @@ public:
 	void FillFilterDepartmentControl();
 	void FillFilterSubjectControl();
 	void FillFilterClassControl();
-	afx_msg void OnCbnSelchangeNewmalopCbb();
 	afx_msg void OnBnClickedXemchitietBtn();
 	afx_msg void OnBnClickedXemBtn();
 	afx_msg void OnBnClickedTimkiemsvBtn();
@@ -49,6 +48,13 @@ public:
 	CButton m_xemchitiet_ctrl;
 	afx_msg void OnCbnSelchangeMalopCbb();
 	CString m_filterMonHoc_val;
-private:
-	CString m_timkiemsv_txt;
+	CEdit m_newdiemgk_txt;
+	CString m_newdiemck_val;
+	CString m_newdiemgk_val;
+	afx_msg void OnBnClickedImportfileBtn();
+	CString m_pathfile_val;
+	afx_msg void OnCbnSelchangeNewmalopCbb();
+	afx_msg void OnBnClickedUploadfileBtn();
+	CButton m_uploadfile_ctrl;
+	CString GetExcelDriver();
 };

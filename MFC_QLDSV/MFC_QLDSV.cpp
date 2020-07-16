@@ -8,6 +8,8 @@
 #include "DanhSachSinhVienTheoKhoa.h"
 #include "MFC_ViewSinhVienDlg.h"
 #include "MainWnd.h"
+#include < wchar.h >
+#include <stdio.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -72,7 +74,8 @@ BOOL CMFCQLDSVApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 	
-	MainWnd dlg;
+	//MainWnd dlg;
+	DanhSachSinhVienTheoKhoa dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

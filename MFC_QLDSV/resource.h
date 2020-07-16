@@ -8,7 +8,6 @@
 #define IDD_VIEWSV_DLG                  102
 #define IDR_MAINFRAME                   128
 #define IDD_DSDSV_DLG                   130
-#define IDD_DSND_DLG                    132
 #define IDD_MAIN_DLG                    136
 #define IDD_DSSVDlg                     138
 #define IDC_VIEWSV_LBL                  1000
@@ -46,30 +45,36 @@
 #define IDC_NEWMSSV_TXT                 1029
 #define IDC_NEWDIEM_TXT                 1030
 #define IDC_NHAPDIEMSV_GROUPBOX         1031
-#define IDC_DSND_LISTCTRL               1032
+#define IDC_NEWDIEMGK_TXT               1031
+#define IDC_NEWDIEMCK_TXT               1032
 #define IDC_MONHOC_LBL4                 1033
 #define IDC_MALOP_LBL2                  1033
 #define IDC_MALOP_CBB2                  1034
 #define IDC_NEWMALOP_CBB                1034
 #define IDC_MONHOC_LBL5                 1035
+#define IDC_TENFILE_TXT                 1035
 #define IDC_MONHOC_LBL6                 1036
 #define IDC_DIEM_LBL                    1036
 #define IDC_XEMCHITIET_BTN              1037
 #define IDC_TENLOP_LBL                  1038
 #define IDC_NEWTENLOP_TXT               1039
 #define IDC_XEM_BTN                     1040
+#define IDC_DIEM_LBL2                   1041
+#define IDC_DIEM_LBL3                   1042
 #define IDC_QLSV_BTN                    1051
 #define IDC_CTDT_BTN                    1052
 #define IDC_DSDIEM_BTN                  1053
 #define IDC_LOGOUT_BTN                  1054
+#define IDC_IMPORTFILE_BTN              1057
+#define IDC_UPLOADFILE_BTN              1058
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        140
+#define _APS_NEXT_RESOURCE_VALUE        142
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1056
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

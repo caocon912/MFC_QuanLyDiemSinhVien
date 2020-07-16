@@ -10,6 +10,8 @@
 #include <sqlext.h>  
 #include "odbcinst.h"
 #include "afxdb.h"
+#include < wchar.h >
+#include <stdio.h>
 
 // MFC_ViewSinhVien dialog
 
@@ -82,10 +84,13 @@ BOOL MFC_ViewSinhVien::OnInitDialog()
 	m_danhsachdiemsv_listctrl.SetExtendedStyle(m_danhsachdiemsv_listctrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	//column width and heading
 	m_danhsachdiemsv_listctrl.InsertColumn(0, L"Môn học", LVCFMT_CENTER, 150);
-	m_danhsachdiemsv_listctrl.InsertColumn(1, L"Mã Lớp", LVCFMT_LEFT, 100);
-	m_danhsachdiemsv_listctrl.InsertColumn(2, L"Điểm", LVCFMT_LEFT, 80);
-	m_danhsachdiemsv_listctrl.InsertColumn(3, L"Ngày bắt đầu", LVCFMT_LEFT, 100);
-	m_danhsachdiemsv_listctrl.InsertColumn(4, L"Ngày kết thúc", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(1, L"Mã Lớp", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(2, L"Điểm qúa trình", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(3, L"Điểm giữa kì", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(4, L"Điểm cuối kì", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(5, L"Điểm trung bình", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(6, L"Ngày bắt đầu", LVCFMT_LEFT, 80);
+	m_danhsachdiemsv_listctrl.InsertColumn(7, L"Ngày kết thúc", LVCFMT_LEFT, 80);
 	CString mssv = GetMSSV();
 
 	LoadThongTinSinhVien(mssv);
@@ -103,9 +108,9 @@ void MFC_ViewSinhVien::LoadThongTinSinhVien(CString mssv) {
 	TRY{
 		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
-		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc;
+		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc, diemqt, diemgk, diemck;
 
-		selectQuery.Format(_T("select MSSV, HOTEN, NGAYSINH, NOISINH, TENKHOA,TENMH, kq.MALOP as MALOP,DIEM,EMAIL,SDT,NGAYBATDAU, NGAYKETTHUC from SinhVien sv inner join Khoa k on sv.makhoa = k.makhoa inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s'"),mssv);
+		selectQuery.Format(_T("select MSSV, HOTEN, NGAYSINH, NOISINH, TENKHOA,TENMH, kq.MALOP as MALOP,DIEM,EMAIL,SDT,NGAYBATDAU, NGAYKETTHUC,DIEMQT,DIEMGK,DIEMCK from SinhVien sv inner join Khoa k on sv.makhoa = k.makhoa inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s'"),mssv);
 		
 		CRecordset recset(&database);
 
@@ -130,13 +135,19 @@ void MFC_ViewSinhVien::LoadThongTinSinhVien(CString mssv) {
 			recset.GetFieldValue(L"SDT",strSDT);
 			recset.GetFieldValue(L"NGAYBATDAU",strNgayBatDau);
 			recset.GetFieldValue(L"NGAYKETTHUC",strNgayKetThuc);
+			recset.GetFieldValue(L"DIEMQT", diemqt);
+			recset.GetFieldValue(L"DIEMGK", diemgk);
+			recset.GetFieldValue(L"DIEMCK", diemck);
 
 			//insert value into list record
 			iDiemMonHoc = m_danhsachdiemsv_listctrl.InsertItem(0, strMonHoc);
 			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 1, strMaLop);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 2, diem);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 3, strNgayBatDau);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 4, strNgayKetThuc);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 2, diemqt);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 3, diemgk);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 4, diemck);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 5, diem);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 6, strNgayBatDau);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiemMonHoc, 7, strNgayKetThuc);
 			//Move next
 			recset.MoveNext();
 

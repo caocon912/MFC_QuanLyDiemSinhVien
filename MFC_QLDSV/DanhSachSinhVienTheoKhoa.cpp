@@ -11,8 +11,8 @@
 #include "odbcinst.h"
 #include "afxdb.h"
 #include "MFC_ViewSinhVienDlg.h"
-
-
+#include < wchar.h >
+#include <stdio.h>
 // DanhSachSinhVienTheoKhoa dialog
 
 IMPLEMENT_DYNAMIC(DanhSachSinhVienTheoKhoa, CDialogEx)
@@ -22,10 +22,12 @@ DanhSachSinhVienTheoKhoa::DanhSachSinhVienTheoKhoa(CWnd* pParent /*=nullptr*/)
 	, m_newmssv_val(_T(""))
 	, m_newdiem_val(_T(""))
 	, m_filterkhoa_val(_T(""))
-	, m_newtenlop_txt(_T(""))
 	, m_newmalop_val(_T(""))
 	, m_timkiemsv_txt(_T(""))
 	, m_filterMonHoc_val(_T(""))
+	, m_newdiemck_val(_T(""))
+	, m_newdiemgk_val(_T(""))
+	, m_pathfile_val(_T(""))
 {
 
 }
@@ -55,7 +57,7 @@ BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
 	m_dssv_listctrl.InsertColumn(3, L"Khoa", LVCFMT_CENTER, 80);
 	m_dssv_listctrl.InsertColumn(4, L"Môn học", LVCFMT_CENTER, 150);
 	m_dssv_listctrl.InsertColumn(5, L"Mã Lớp", LVCFMT_LEFT, 100);
-	m_dssv_listctrl.InsertColumn(6, L"Điểm", LVCFMT_LEFT, 80);
+	m_dssv_listctrl.InsertColumn(6, L"ĐiểmTB", LVCFMT_LEFT, 80);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -193,7 +195,6 @@ void DanhSachSinhVienTheoKhoa::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_KHOA_CBB, m_filterKhoa_ctrl);
 	DDX_Control(pDX, IDC_NEWMALOP_CBB, m_newmalop_ctrl);
 	DDX_CBString(pDX, IDC_NEWMALOP_CBB, m_newmalop_val);
-	DDX_Text(pDX, IDC_NEWTENLOP_TXT, m_newtenlop_txt);
 
 	DDX_Control(pDX, IDC_MONHOC_CBB, m_filterMonHoc_ctrl);
 	DDX_Control(pDX, IDC_MALOP_CBB, m_filterMaLop_ctrl);
@@ -201,6 +202,11 @@ void DanhSachSinhVienTheoKhoa::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_TIMKIEMSV_TXT, m_timkiemsv_txt);
 	DDX_Control(pDX, IDC_XEMCHITIET_BTN, m_xemchitiet_ctrl);
 	DDX_CBString(pDX, IDC_MONHOC_CBB, m_filterMonHoc_val);
+	DDX_Control(pDX, IDC_NEWDIEMGK_TXT, m_newdiemgk_txt);
+	DDX_Text(pDX, IDC_NEWDIEMCK_TXT, m_newdiemck_val);
+	DDX_Text(pDX, IDC_NEWDIEMGK_TXT, m_newdiemgk_val);
+	DDX_Text(pDX, IDC_TENFILE_TXT, m_pathfile_val);
+	DDX_Control(pDX, IDC_UPLOADFILE_BTN, m_uploadfile_ctrl);
 }
 
 
@@ -209,12 +215,14 @@ BEGIN_MESSAGE_MAP(DanhSachSinhVienTheoKhoa, CDialogEx)
 	ON_EN_CHANGE(IDC_NEWMSSV_TXT, &DanhSachSinhVienTheoKhoa::OnEnChangeNewmssvTxt)
 	ON_CBN_SELCHANGE(IDC_KHOA_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb)
 	ON_CBN_SELCHANGE(IDC_MONHOC_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb)
-	ON_CBN_SELCHANGE(IDC_NEWMALOP_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb)
 	ON_BN_CLICKED(IDC_XEMCHITIET_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedXemchitietBtn)
 	ON_BN_CLICKED(IDC_XEM_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn)
 	ON_BN_CLICKED(IDC_TIMKIEMSV_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DSDSVTK_LISTCTRL, &DanhSachSinhVienTheoKhoa::OnLvnItemchangedDsdsvtkListctrl)
 	ON_CBN_SELCHANGE(IDC_MALOP_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeMalopCbb)
+	ON_BN_CLICKED(IDC_IMPORTFILE_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedImportfileBtn)
+	ON_CBN_SELCHANGE(IDC_NEWMALOP_CBB, &DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb)
+	ON_BN_CLICKED(IDC_UPLOADFILE_BTN, &DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn)
 END_MESSAGE_MAP()
 
 
@@ -234,8 +242,11 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedNhapdiemBtn()
 		UpdateData(TRUE);
 		strMSSV = m_newmssv_val;
 		m_newmalop_ctrl.GetLBText(m_newmalop_ctrl.GetCurSel(), strMaLop);
-		float strDiem = _ttof(m_newdiem_val);
-		insertQuery.Format(_T("INSERT INTO KETQUA(MASSV,MALOP,DIEM) VALUES ('%s','%s',%f)"), m_newmssv_val, m_newmalop_val, strDiem);
+		float diemQT = _ttof(m_newdiem_val);
+		float diemGK = _ttof(m_newdiemgk_val);
+		float diemCK = _ttof(m_newdiemck_val);
+		float diemTB = (diemQT*0.1 + diemGK*0.3 + diemCK*0.6);
+		insertQuery.Format(_T("INSERT INTO KETQUA(MASSV,MALOP,DIEM,DIEMQT,DIEMGK,DIEMCK) VALUES ('%s','%s',%f,%f,%f,%f)"), m_newmssv_val, m_newmalop_val, diemTB,diemQT,diemGK,diemCK);
 		database.ExecuteSQL(insertQuery);
 		AfxMessageBox(L"Đã thêm điểm cho sinh viên MSSV:"+m_newmssv_val);
 		database.Close();
@@ -356,15 +367,6 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMalopCbb()
 	// TODO: Add your control notification handler code here
 }
 
-void DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb()
-{
-	// TODO: Add your control notification handler code here
-	CString maLop;
-	m_newmalop_ctrl.GetLBText(m_newmalop_ctrl.GetCurSel(),maLop);
-	UpdateData(FALSE);
-	m_newtenlop_txt = maLop;
-}
-
 
 void DanhSachSinhVienTheoKhoa::OnBnClickedXemchitietBtn()
 {
@@ -383,8 +385,8 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 	// TODO: Add your control notification handler code here
 	CString maKhoa, maMonHoc, maLop;
 	m_filterKhoa_ctrl.GetLBText(m_filterKhoa_ctrl.GetCurSel(), maKhoa);
-	//m_filterMonHoc_ctrl.GetLBText(m_filterMonHoc_ctrl.GetCurSel(),maMonHoc);
-	//m_filterMaLop_ctrl.GetLBText(m_filterMaLop_ctrl.GetCurSel(),maLop);
+	m_filterMonHoc_ctrl.GetLBText(m_filterMonHoc_ctrl.GetCurSel(),maMonHoc);
+	m_filterMaLop_ctrl.GetLBText(m_filterMaLop_ctrl.GetCurSel(),maLop);
 
 	/*has issues: not yet get data from control in groupbox*/
 	CDatabase database;
@@ -405,10 +407,10 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 			selectQuery += L"TENKHOA LIKE N'" + maKhoa + L"'";
 		}
 		if (!maMonHoc.IsEmpty()) {
-			selectQuery += L"TENMH LIKE N'" + maMonHoc + L"'";
+			selectQuery += L"and TENMH LIKE N'" + maMonHoc + L"'";
 		}
 		if (!maLop.IsEmpty()) {
-			selectQuery += L"MALOP LIKE N'" + maLop + L"'";
+			selectQuery += L"AND kq.MALOP LIKE N'" + maLop + L"'";
 		}
 		CRecordset recsetSV(&database);
 
@@ -502,5 +504,114 @@ void DanhSachSinhVienTheoKhoa::OnLvnItemchangedDsdsvtkListctrl(NMHDR* pNMHDR, LR
 
 }
 
+
+void DanhSachSinhVienTheoKhoa::OnBnClickedImportfileBtn()
+{
+	//import file excel danh sách điểm theo lớp 
+	CFileDialog l_fDlg(TRUE);
+	int fileDlg = l_fDlg.DoModal();
+	CString strFile;
+	
+	if (fileDlg == IDOK) {
+		strFile = l_fDlg.GetPathName();
+		
+		m_pathfile_val = strFile;
+		UpdateData(FALSE);
+
+		m_uploadfile_ctrl.EnableWindow(TRUE);
+	} 
+	if (strFile.IsEmpty()) {
+		AfxMessageBox(L"File chưa hợp lệ!Thử lại");
+		return;
+	}
+}
+
+void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
+{
+	//read file using ODBC
+	UpdateData(TRUE);
+	CDatabase database;
+
+	CString sDriver;
+	CString sDsn;
+	CString sFile = m_pathfile_val;
+
+	sDriver = GetExcelDriver();
+
+	if (sDriver.IsEmpty()) {
+		AfxMessageBox(L"Không tìm thấy sDriver");
+		//return;
+	}
+	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+	TRY{
+		database.Open(NULL,false,false,sDsn);
+
+		CString sqlQuery;
+		sqlQuery = L"SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM"
+					"FROM KETQUA";
+		CString strMSSV, strMaLop, strDiemQT, strDiemGK, strDiemCK, strDiem;
+
+		CRecordset recsetKQ(&database);
+
+		recsetKQ.Open(CRecordset::forwardOnly, sqlQuery, CRecordset::readOnly);
+
+		int iSinhVien = 0;
+		//loop all the row result
+		while (!recsetKQ.IsEOF()) { //EOF: end of file
+			/*recsetKQ.GetFieldValue(L"MSSV", strMSSV);
+			recsetKQ.GetFieldValue(L"MALOP", strMaLop);
+			recsetKQ.GetFieldValue(L"DIEMQT", strDiemQT);
+			recsetKQ.GetFieldValue(L"DIEMGK", strDiemGK);
+			recsetKQ.GetFieldValue(L"DIEMCK", strDiemCK);
+			recsetKQ.GetFieldValue(L"DIEM", strDiem);*/
+
+			//insert value into list record
+			iSinhVien = m_dssv_listctrl.InsertItem(0, strMSSV);
+			m_dssv_listctrl.SetItemText(iSinhVien, 1, strMaLop);
+			m_dssv_listctrl.SetItemText(iSinhVien, 2, strDiemQT);
+			m_dssv_listctrl.SetItemText(iSinhVien, 3, strDiemGK);
+			m_dssv_listctrl.SetItemText(iSinhVien, 2, strDiemCK);
+			m_dssv_listctrl.SetItemText(iSinhVien, 3, strDiem);
+			//Move next
+			recsetKQ.MoveNext();
+
+		}
+		recsetKQ.Close();
+		database.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error: " + e->m_strError);
+		return;
+	} END_CATCH
+
+}
+CString DanhSachSinhVienTheoKhoa::GetExcelDriver()
+{
+	char szBuf[2001];
+	WORD cbBufMax = 2000;
+	WORD cbBufOut;
+	char* pszBuf = szBuf;
+	CString sDriver;
+
+	// Get the names of the installed drivers ("odbcinst.h" has to be included )
+	//if (!SQLGetInstalledDrivers(szBuf, cbBufMax, &cbBufOut))
+	//	return L"";
+	
+	// Search for the driver...
+	do
+	{
+		if (strstr(pszBuf, "Excel") != 0)
+		{
+			// Found !
+			sDriver = CString(pszBuf);
+			break;
+		}
+		pszBuf = strchr(pszBuf, '\0') + 1;
+	} while (pszBuf[1] != '\0');
+	return sDriver;
+}
+void DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb()
+{
+	// TODO: Add your control notification handler code here
+}
 
 
