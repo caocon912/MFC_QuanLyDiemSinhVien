@@ -55,7 +55,7 @@ BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
 	m_dssv_listctrl.InsertColumn(1, L"Họ Tên", LVCFMT_CENTER, 100);
 	m_dssv_listctrl.InsertColumn(2, L"Ngày sinh", LVCFMT_CENTER, 80);
 	m_dssv_listctrl.InsertColumn(3, L"Khoa", LVCFMT_CENTER, 80);
-	m_dssv_listctrl.InsertColumn(4, L"Môn học", LVCFMT_CENTER, 150);
+	m_dssv_listctrl.InsertColumn(4,	L"Môn học", LVCFMT_CENTER, 150);
 	m_dssv_listctrl.InsertColumn(5, L"Mã Lớp", LVCFMT_LEFT, 100);
 	m_dssv_listctrl.InsertColumn(6, L"ĐiểmTB", LVCFMT_LEFT, 80);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -539,15 +539,17 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 	sDriver = GetExcelDriver();
 
 	if (sDriver.IsEmpty()) {
-		AfxMessageBox(L"Không tìm thấy sDriver");
+		AfxMessageBox(L"Không tìm thấy Driver Excel");
 		//return;
 	}
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+	//sDsn.Format(_T("ODBC;DRIVER={Microsoft Excel Driver(*.xls)};DSN='';DBQ=%s"), sFile);
+	
+	sDsn.Format(L"ODBC;DRIVER={%s};DSN='';DBQ=%s", sDriver, sFile);
 	TRY{
-		database.Open(NULL,false,false,sDsn);
+		database.Open(NULL, false, false, sDsn);
 
 		CString sqlQuery;
-		sqlQuery = L"SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM"
+		sqlQuery = "SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM "
 					"FROM KETQUA";
 		CString strMSSV, strMaLop, strDiemQT, strDiemGK, strDiemCK, strDiem;
 
@@ -558,12 +560,12 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 		int iSinhVien = 0;
 		//loop all the row result
 		while (!recsetKQ.IsEOF()) { //EOF: end of file
-			/*recsetKQ.GetFieldValue(L"MSSV", strMSSV);
+			recsetKQ.GetFieldValue(L"MSSV", strMSSV);
 			recsetKQ.GetFieldValue(L"MALOP", strMaLop);
 			recsetKQ.GetFieldValue(L"DIEMQT", strDiemQT);
 			recsetKQ.GetFieldValue(L"DIEMGK", strDiemGK);
 			recsetKQ.GetFieldValue(L"DIEMCK", strDiemCK);
-			recsetKQ.GetFieldValue(L"DIEM", strDiem);*/
+			recsetKQ.GetFieldValue(L"DIEM", strDiem);
 
 			//insert value into list record
 			iSinhVien = m_dssv_listctrl.InsertItem(0, strMSSV);
@@ -586,27 +588,27 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 }
 CString DanhSachSinhVienTheoKhoa::GetExcelDriver()
 {
-	char szBuf[2001];
+	TCHAR szBuf[2001];
 	WORD cbBufMax = 2000;
 	WORD cbBufOut;
-	char* pszBuf = szBuf;
+	TCHAR* pszBuf = szBuf;
 	CString sDriver;
 
 	// Get the names of the installed drivers ("odbcinst.h" has to be included )
-	//if (!SQLGetInstalledDrivers(szBuf, cbBufMax, &cbBufOut))
-	//	return L"";
+	if (!SQLGetInstalledDrivers(szBuf, cbBufMax, &cbBufOut))
+		return L"";
 	
 	// Search for the driver...
 	do
 	{
-		if (strstr(pszBuf, "Excel") != 0)
+		if (_tcsstr(pszBuf,_T("Excel")) != 0)//_tcssstr: tìm kiếm 1 chuỗi con trong chuỗi đích, dùng cho KDL TCHAR
 		{
 			// Found !
 			sDriver = CString(pszBuf);
 			break;
 		}
-		pszBuf = strchr(pszBuf, '\0') + 1;
-	} while (pszBuf[1] != '\0');
+		pszBuf = wcschr(pszBuf, _T('\0')) + 1; //wcschar: tìm kiếm 1 kí tự kiểu char trong chuỗi kiểu wchar
+	} while (pszBuf[1] != _T('\0'));
 	return sDriver;
 }
 void DanhSachSinhVienTheoKhoa::OnCbnSelchangeNewmalopCbb()

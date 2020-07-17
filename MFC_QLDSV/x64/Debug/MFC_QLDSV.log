@@ -1,8 +1,2 @@
-﻿  DanhSachSinhVienTheoKhoa.cpp
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(245,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(246,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(247,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(248,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(512,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(591,7): warning C4101: 'cbBufOut': unreferenced local variable
+﻿  QLSV.cpp
   MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QLDSV\x64\Debug\MFC_QLDSV.exe

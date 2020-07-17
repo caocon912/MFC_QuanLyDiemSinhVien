@@ -6,7 +6,7 @@
 #include "MainWnd.h"
 #include "afxdialogex.h"
 #include "DanhSachSinhVienTheoKhoa.h"
-
+#include "QLSV.h"
 // MainWnd dialog
 
 IMPLEMENT_DYNAMIC(MainWnd, CDialogEx)
@@ -38,7 +38,8 @@ END_MESSAGE_MAP()
 
 void MainWnd::OnBnClickedQlsvBtn()
 {
-	// TODO: Add your control notification handler code here
+	QLSV dlg;
+	dlg.DoModal();
 
 }
 

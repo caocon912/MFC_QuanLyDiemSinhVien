@@ -10,6 +10,7 @@
 #define IDD_DSDSV_DLG                   130
 #define IDD_MAIN_DLG                    136
 #define IDD_DSSVDlg                     138
+#define IDB_BITMAP1                     142
 #define IDC_VIEWSV_LBL                  1000
 #define IDC_DIEMSV_LISTCRL              1001
 #define IDC_TENSV_LBL                   1002
@@ -67,14 +68,36 @@
 #define IDC_LOGOUT_BTN                  1054
 #define IDC_IMPORTFILE_BTN              1057
 #define IDC_UPLOADFILE_BTN              1058
+#define IDC_DSSV_LBL                    1059
+#define IDC_DSSV_LISTCTRL               1060
+#define IDC_THEMSV_BTN                  1061
+#define IDC_SUASV_BTN                   1062
+#define IDC_XOASV_BTN                   1063
+#define IDC_SUBMITIMPORT_BTN            1064
+#define IDC_HOTEN_TXT                   1065
+#define IDC_                            1066
+#define IDC_INSV_BTN                    1066
+#define IDC_ADDRESS1_TXT                1067
+#define IDC_NIENKHOA_TXT                1069
+#define IDC_POB_TXT                     1070
+#define IDC_ADDESS2_TXT                 1071
+#define IDC_SDT_TXT                     1072
+#define IDC_EMAIL_TXT                   1073
+#define IDC_CMND_TXT                    1074
+#define IDC_LOPSV_TXT                   1075
+#define IDC_PWD_TXT                     1076
+#define IDC_DOB_TXT                     1077
+#define IDC_IMPORTSV                    1078
+#define IDC_PASSWORD_LBL                1081
+#define IDC_AVA_CTRL                    1082
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        142
+#define _APS_NEXT_RESOURCE_VALUE        143
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1059
+#define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

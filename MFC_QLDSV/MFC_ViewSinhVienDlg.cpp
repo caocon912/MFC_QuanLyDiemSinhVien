@@ -10,7 +10,6 @@
 #include <sqlext.h>  
 #include "odbcinst.h"
 #include "afxdb.h"
-#include < wchar.h >
 #include <stdio.h>
 
 // MFC_ViewSinhVien dialog
