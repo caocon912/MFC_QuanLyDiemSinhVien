@@ -22,6 +22,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	CString mssv;
+	CDatabase database;
+	CString sDsn;
 public:
 	void SetMSSV(CString mssv);
 	CString GetMSSV();

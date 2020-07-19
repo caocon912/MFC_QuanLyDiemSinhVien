@@ -11,6 +11,8 @@
 #define IDD_MAIN_DLG                    136
 #define IDD_DSSVDlg                     138
 #define IDB_BITMAP1                     142
+#define IDC_CURSOR1                     143
+#define IDD_DIALOG1                     144
 #define IDC_VIEWSV_LBL                  1000
 #define IDC_DIEMSV_LISTCRL              1001
 #define IDC_TENSV_LBL                   1002
@@ -95,7 +97,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           101

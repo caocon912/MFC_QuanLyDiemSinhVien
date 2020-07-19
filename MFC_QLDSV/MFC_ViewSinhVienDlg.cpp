@@ -12,6 +12,7 @@
 #include "afxdb.h"
 #include <stdio.h>
 
+
 // MFC_ViewSinhVien dialog
 
 IMPLEMENT_DYNAMIC(MFC_ViewSinhVien, CDialogEx)
@@ -26,11 +27,18 @@ MFC_ViewSinhVien::MFC_ViewSinhVien(CWnd* pParent /*=nullptr*/)
 	, m_timkiemdiem_ctrl(_T(""))
 	, m_hotensv_val(_T(""))
 {
-
+	TRY{
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		database.Open(NULL, false, false, sDsn);
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
+	}END_CATCH
 }
 
 MFC_ViewSinhVien::~MFC_ViewSinhVien()
 {
+	database.Close();
 }
 
 void MFC_ViewSinhVien::DoDataExchange(CDataExchange* pDX)
@@ -81,7 +89,7 @@ BOOL MFC_ViewSinhVien::OnInitDialog()
 	// TODO:  Add extra initialization here
 	ListView_SetExtendedListViewStyle(m_danhsachdiemsv_listctrl, LVS_EX_GRIDLINES);
 	m_danhsachdiemsv_listctrl.SetExtendedStyle(m_danhsachdiemsv_listctrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
-	//column width and heading
+	//column width and heading 
 	m_danhsachdiemsv_listctrl.InsertColumn(0, L"Môn học", LVCFMT_CENTER, 150);
 	m_danhsachdiemsv_listctrl.InsertColumn(1, L"Mã Lớp", LVCFMT_LEFT, 80);
 	m_danhsachdiemsv_listctrl.InsertColumn(2, L"Điểm qúa trình", LVCFMT_LEFT, 80);
@@ -98,14 +106,7 @@ BOOL MFC_ViewSinhVien::OnInitDialog()
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 void MFC_ViewSinhVien::LoadThongTinSinhVien(CString mssv) {
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-	
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
 		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc, diemqt, diemgk, diemck;
 
@@ -161,7 +162,6 @@ void MFC_ViewSinhVien::LoadThongTinSinhVien(CString mssv) {
 		m_sdtsv_val = strSDT;
 		UpdateData(FALSE);
 		recset.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error:danh sach diem sinh vien " + e->m_strError);
 	} END_CATCH
@@ -205,14 +205,7 @@ void MFC_ViewSinhVien::OnBnClickedEditsvBtn()
 void MFC_ViewSinhVien::OnBnClickedSaveeditBtn()
 {
 	UpdateData(TRUE);
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString updateQuery, selectKhoaQuery;
 		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strMaKhoa, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc;
 		
@@ -237,11 +230,8 @@ void MFC_ViewSinhVien::OnBnClickedSaveeditBtn()
 		//cap nhat thay doi thong tin sinh vien, ket qua
 		updateQuery.Format(L"UPDATE SinhVien SET makhoa =N'%s' ,hoten =N'%s' , ngaysinh ='%s' , email ='%s' ,noisinh = '%s',sdt = '%s' WHERE MSSV = '%s'", strMaKhoa, strHoTen, strNgaySinh, strEmail, strNoiSinh, strSDT, strMSSV);
 		database.ExecuteSQL(updateQuery);
-		
-		database.Close();
+	
 		ResetControl();
-
-
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error:danh sach diem sinh vien " + e->m_strError);
 	} END_CATCH
@@ -253,11 +243,6 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 {
 
 	UpdateData(TRUE);
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
 		database.Open(NULL,false,false,sDsn);
 
@@ -293,7 +278,6 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 
 		}
 		recsetMonHoc.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 	} END_CATCH

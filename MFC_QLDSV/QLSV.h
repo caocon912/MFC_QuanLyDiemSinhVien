@@ -15,7 +15,9 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DSSVDlg };
 #endif
-
+private:
+	CDatabase database;
+	CString sDsn;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

@@ -29,16 +29,24 @@ DanhSachSinhVienTheoKhoa::DanhSachSinhVienTheoKhoa(CWnd* pParent /*=nullptr*/)
 	, m_newdiemgk_val(_T(""))
 	, m_pathfile_val(_T(""))
 {
-
+	TRY{
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		database.Open(NULL, false, false, sDsn);
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
+	}END_CATCH
 }
 
 DanhSachSinhVienTheoKhoa::~DanhSachSinhVienTheoKhoa()
 {
+	database.Close();
 }
 
 BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	
 	FillNewClassControl();
 	FillFilterDepartmentControl();
 	FillFilterSubjectControl();
@@ -62,18 +70,11 @@ BOOL DanhSachSinhVienTheoKhoa::OnInitDialog()
 				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 void DanhSachSinhVienTheoKhoa::FillNewClassControl() {
-	CDatabase database;
-	CString sDsn;//data source name
 	CString strMaLop, strTenLop;
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-
+	CString selectQuery;
+	selectQuery.Format(_T("SELECT MALOP,TENLOP FROM LOP"));
 	TRY{
-		database.Open(NULL,false,false,sDsn);
-		
-		CString selectQuery;
-		selectQuery.Format(_T("SELECT MALOP,TENLOP FROM LOP"));
-
-		CRecordset recsetLop(&database);
+	CRecordset recsetLop(&database);
 
 		recsetLop.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
 
@@ -83,7 +84,6 @@ void DanhSachSinhVienTheoKhoa::FillNewClassControl() {
 			recsetLop.MoveNext();
 		}
 		recsetLop.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error combobox Lop: " + e->m_strError);
 	} END_CATCH
@@ -91,16 +91,8 @@ void DanhSachSinhVienTheoKhoa::FillNewClassControl() {
 }
 void DanhSachSinhVienTheoKhoa::FillFilterSubjectControl() {
 	//load du lieu len filter combobox subject
-	CDatabase database;
-	CString sDsn;
 	CString strMaMonHoc, strTenMonHoc;
-	//	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-	//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
-
 	TRY{
-		database.Open(NULL,false,false,sDsn);
-
 		CString selectQuery;
 		selectQuery.Format(_T("SELECT MAMH,TENMH FROM MONHOC"));
 
@@ -115,7 +107,6 @@ void DanhSachSinhVienTheoKhoa::FillFilterSubjectControl() {
 			recsetMonHoc.MoveNext();
 		}
 		recsetMonHoc.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error combobox mon hoc: " + e->m_strError);
 	} END_CATCH
@@ -123,16 +114,8 @@ void DanhSachSinhVienTheoKhoa::FillFilterSubjectControl() {
 
 void DanhSachSinhVienTheoKhoa::FillFilterClassControl() {
 	//load du lieu len filter combobox subject
-	CDatabase database;
-	CString sDsn;
 	CString strMaLop, strTenLop;
-	//	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-	//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
-
 	TRY{
-		database.Open(NULL,false,false,sDsn);
-
 		CString selectQuery;
 		selectQuery.Format(_T("SELECT MALOP,TENLOP,MAMH FROM LOP"));
 
@@ -147,7 +130,6 @@ void DanhSachSinhVienTheoKhoa::FillFilterClassControl() {
 			recsetLop.MoveNext();
 		}
 		recsetLop.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error combobox lop: " + e->m_strError);
 	} END_CATCH
@@ -155,16 +137,8 @@ void DanhSachSinhVienTheoKhoa::FillFilterClassControl() {
 
 void DanhSachSinhVienTheoKhoa::FillFilterDepartmentControl() {
 	//load du lieu len filter combobox khoa
-	CDatabase database;
-	CString sDsn;
 	CString strMaKhoa, strTenKhoa;
-	//	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-	//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
-
 	TRY{
-		database.Open(NULL,false,false,sDsn);
-
 		CString selectQuery;
 		selectQuery.Format(_T("SELECT MAKHOA,TENKHOA FROM KHOA"));
 
@@ -175,11 +149,11 @@ void DanhSachSinhVienTheoKhoa::FillFilterDepartmentControl() {
 		while (!recsetKhoa.IsEOF()) {
 			recsetKhoa.GetFieldValue(L"MAKHOA",strMaKhoa);
 			recsetKhoa.GetFieldValue(L"TENKHOA", strTenKhoa);
+			
 			m_filterKhoa_ctrl.AddString(strTenKhoa);
 			recsetKhoa.MoveNext();
 		}
 		recsetKhoa.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error combobox khoa: " + e->m_strError);
 	} END_CATCH
@@ -229,13 +203,7 @@ END_MESSAGE_MAP()
 //Thực hiện lưu thông tin điểm mới nhập vào bảng kết quả
 void DanhSachSinhVienTheoKhoa::OnBnClickedNhapdiemBtn()
 {
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CRecordset recset(&database);
 		CString insertQuery;
 		CString strMSSV, strMaLop;
@@ -249,7 +217,6 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedNhapdiemBtn()
 		insertQuery.Format(_T("INSERT INTO KETQUA(MASSV,MALOP,DIEM,DIEMQT,DIEMGK,DIEMCK) VALUES ('%s','%s',%f,%f,%f,%f)"), m_newmssv_val, m_newmalop_val, diemTB,diemQT,diemGK,diemCK);
 		database.ExecuteSQL(insertQuery);
 		AfxMessageBox(L"Đã thêm điểm cho sinh viên MSSV:"+m_newmssv_val);
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error of them moi diem cho sinh vien: " + e->m_strError);
 	} END_CATCH
@@ -277,13 +244,7 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 	//lay gia tri tai index do
 	m_filterKhoa_ctrl.GetLBText(indexCCB,khoa);
 	
-	//load combobox Môn học và mã lớp
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
 		CString strMaMonHoc, strTenMonHoc, strMaLop, strTenLop;
 		selectQuery.Format(_T("select MAMH, TENMH from MONHOC where MAKHOA in (select MAKHOA from KHOA where TENKHOA = N'%s')"),khoa);
@@ -310,7 +271,6 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeKhoaCbb()
 		OnCbnSelchangeMonhocCbb();
 		
 		recset.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error of combox mamh,malop: " + e->m_strError);
 	} END_CATCH
@@ -325,13 +285,7 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb()
 	//lay gia tri tai index do
 	m_filterMonHoc_ctrl.GetLBText(indexCCB, monHoc);
 
-	//load combobox mã lớp
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
 		CString strMaLop, strTenLop;
 		selectQuery.Format(_T("select MALOP, TENLOP from LOP where MAMH in (select MAMH from MONHOC where TENMH = N'%s')"),monHoc);
@@ -355,7 +309,6 @@ void DanhSachSinhVienTheoKhoa::OnCbnSelchangeMonhocCbb()
 		m_filterMaLop_ctrl.SetCurSel(0);
 		m_filterMaLop_ctrl.EnableWindow();
 		recset.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error of combox malop: " + e->m_strError);
 	} END_CATCH
@@ -388,13 +341,7 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 	m_filterMonHoc_ctrl.GetLBText(m_filterMonHoc_ctrl.GetCurSel(),maMonHoc);
 	m_filterMaLop_ctrl.GetLBText(m_filterMaLop_ctrl.GetCurSel(),maLop);
 
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
 		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa;
 		selectQuery.Format(_T("select MASSV,HOTEN,NGAYSINH,TENKHOA,TENMH,MAMH,tmp1.MALOP,DIEM from ketqua kq inner join (select MSSV, HOTEN, NGAYSINH, TENKHOA, sv.MAKHOA from sinhvien SV inner join Khoa k on sv.makhoa = k.makhoa) sinhvien on kq.massv = sinhvien.mssv inner join (select TENMH, mh.MAMH, MALOP from monhoc mh inner join lop lp on lp.mamh = mh.mamh) tmp1 on tmp1.malop = kq.malop"));
@@ -443,7 +390,6 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 
 		}
 		recsetSV.Close();
-		database.Close();
 		m_xemchitiet_ctrl.EnableWindow(TRUE);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
@@ -454,11 +400,6 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 void DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn()
 {
 	UpdateData(TRUE);
-	/*has issues: not yet get data from control in groupbox*/
-	CDatabase database;
-	CString sDsn;
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
 		database.Open(NULL,false,false,sDsn);
 		
@@ -489,7 +430,6 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn()
 
 		}
 		recsetSV.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 	} END_CATCH
@@ -530,23 +470,20 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 {
 	//read file using ODBC
 	UpdateData(TRUE);
-	CDatabase database;
-
+	
 	CString sDriver;
-	CString sDsn;
 	CString sFile = m_pathfile_val;
 
 	sDriver = GetExcelDriver();
 
 	if (sDriver.IsEmpty()) {
 		AfxMessageBox(L"Không tìm thấy Driver Excel");
-		//return;
+		return;
 	}
-	//sDsn.Format(_T("ODBC;DRIVER={Microsoft Excel Driver(*.xls)};DSN='';DBQ=%s"), sFile);
 	
 	sDsn.Format(L"ODBC;DRIVER={%s};DSN='';DBQ=%s", sDriver, sFile);
 	TRY{
-		database.Open(NULL, false, false, sDsn);
+		//database.Open(NULL, false, false, sDsn);
 
 		CString sqlQuery;
 		sqlQuery = "SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM "
@@ -579,7 +516,6 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 
 		}
 		recsetKQ.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 		return;

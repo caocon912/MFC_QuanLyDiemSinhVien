@@ -3,10 +3,10 @@
 
 // DanhSachSinhVienTheoKhoa dialog
 
-class DanhSachSinhVienTheoKhoa : public CDialogEx
+class DanhSachSinhVienTheoKhoa :public CDialogEx
 {
 	DECLARE_DYNAMIC(DanhSachSinhVienTheoKhoa)
-
+  
 public:
 	DanhSachSinhVienTheoKhoa(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~DanhSachSinhVienTheoKhoa();
@@ -17,6 +17,8 @@ public:
 #endif
 private:
 	CString m_timkiemsv_txt;
+	CDatabase database;
+	CString sDsn;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

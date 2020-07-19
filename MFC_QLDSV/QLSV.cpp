@@ -1,4 +1,4 @@
-// QLSV.cpp : implementation file
+﻿// QLSV.cpp : implementation file
 //
 
 #include "pch.h"
@@ -31,6 +31,13 @@ QLSV::QLSV(CWnd* pParent /*=nullptr*/)
 	, m_address2_val(_T(""))
 	, m_nienkhoa_val(_T(""))
 {
+	TRY{
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		database.Open(NULL, false, false, sDsn);
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
+	}END_CATCH
 
 }
 
@@ -69,18 +76,13 @@ END_MESSAGE_MAP()
 BOOL QLSV::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	CDatabase database;
-	CString sDsn;
-
-	//build ODBC connection string
-	sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
 	TRY{
-		database.Open(NULL,false,false,sDsn);
 		CString selectQuery;
 		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc, diemqt, diemgk, diemck;
 
-		selectQuery.Format(_T("select MSSV, HOTEN, NGAYSINH, NOISINH, TENKHOA,TENMH, kq.MALOP as MALOP,DIEM,EMAIL,SDT,NGAYBATDAU, NGAYKETTHUC,DIEMQT,DIEMGK,DIEMCK from SinhVien sv inner join Khoa k on sv.makhoa = k.makhoa inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s'"),mssv);
+		selectQuery.Format(_T("select MSSV, HOTEN, NGAYSINH, NOISINH, TENKHOA,TENMH, kq.MALOP as MALOP,DIEM,EMAIL,SDT,NGAYBATDAU, NGAYKETTHUC,DIEMQT,DIEMGK,DIEMCK"
+			"from SinhVien sv inner join Khoa k on sv.makhoa = k.makhoa inner join KetQua kq on sv.mssv = kq.massv"
+			"inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '4201104001'"));
 
 		CRecordset recset(&database);
 
@@ -115,19 +117,9 @@ BOOL QLSV::OnInitDialog()
 			m_dssv_listctrl.SetItemText(iDiemMonHoc, 7, strNgayKetThuc);
 			//Move next
 			recset.MoveNext();
-
-		}
-		m_khoa_ctrl.AddString(strTenKhoa);
-		m_khoa_ctrl.SetCurSel(0);
-		m_hotensv_val = strHoTen;
-		m_emailsv_val = strEmail;
-		m_dobsv_val.ParseDateTime(strNgaySinh);
-		m_mssv_val = strMSSV;
-		m_pobsv_val = strNoiSinh;
-		m_sdtsv_val = strSDT;
+		}		
 		UpdateData(FALSE);
 		recset.Close();
-		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error:danh sach diem sinh vien " + e->m_strError);
 	} END_CATCH

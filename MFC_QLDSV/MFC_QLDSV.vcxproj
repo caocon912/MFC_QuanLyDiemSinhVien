@@ -214,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.hm" />
+    <None Include="res\cursor1.cur" />
     <None Include="res\MFCQLDSV.rc2" />
   </ItemGroup>
   <ItemGroup>

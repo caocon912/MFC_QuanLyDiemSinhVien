@@ -1,4 +1,4 @@
-
+﻿
 // MFC_QLDSV.cpp : Defines the class behaviors for the application.
 //
 
@@ -10,6 +10,7 @@
 #include "MainWnd.h"
 #include < wchar.h >
 #include <stdio.h>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -31,9 +32,26 @@ CMFCQLDSVApp::CMFCQLDSVApp()
 
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
-}
-
-
+	//connect db
+	/*{
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV;UID=;PWD=;");
+		database.Open(NULL, false, false, sDsn);
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
+		return;
+	}END_CATCH*/
+};
+CMFCQLDSVApp::~CMFCQLDSVApp()
+{
+	//database.Close();
+};
+/*CString CMFCQLDSVApp::GetsDsn() {
+	return sDsn;
+};
+void CMFCQLDSVApp::SetsDsn(CString dataNameSource) {
+	sDsn = dataNameSource;
+};*/
 // The one and only CMFCQLDSVApp object
 
 CMFCQLDSVApp theApp;
