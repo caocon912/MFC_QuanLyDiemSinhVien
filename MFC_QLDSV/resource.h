@@ -13,6 +13,7 @@
 #define IDB_BITMAP1                     142
 #define IDC_CURSOR1                     143
 #define IDD_DIALOG1                     144
+#define IDD_THEMDIEM_DLG                144
 #define IDC_VIEWSV_LBL                  1000
 #define IDC_DIEMSV_LISTCRL              1001
 #define IDC_TENSV_LBL                   1002
@@ -39,8 +40,11 @@
 #define IDC_NHAPDIEM_BTN                1022
 #define IDC_TIMKIEMMH_BTN               1022
 #define IDC_TIMKIEMSV_BTN               1023
+#define IDC_SUADIEM_BTN                 1023
 #define IDC_MONHOC_LBL                  1024
+#define IDC_XOADIEM_BTN                 1024
 #define IDC_MONHOC_CBB                  1025
+#define IDC_REFRESH_BTN                 1025
 #define IDC_TIMKIEMSV_TXT               1026
 #define IDC_MONHOC_LBL2                 1027
 #define IDC_MALOP_LBL                   1027
@@ -92,6 +96,14 @@
 #define IDC_IMPORTSV                    1078
 #define IDC_PASSWORD_LBL                1081
 #define IDC_AVA_CTRL                    1082
+#define IDC_DIEMQT_LBL                  1083
+#define IDC_DIEMGK_LBL                  1084
+#define IDC_DIEMCK_LBL                  1085
+#define IDC_EDIT1                       1086
+#define IDC_MALOP_TXT                   1086
+#define IDC_DIEMQT_TXT                  1087
+#define IDC_DIEMGK_TXT                  1088
+#define IDC_DIEMCK_TXT                  1089
 
 // Next default values for new objects
 // 
@@ -99,7 +111,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        146
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1083
+#define _APS_NEXT_CONTROL_VALUE         1091
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

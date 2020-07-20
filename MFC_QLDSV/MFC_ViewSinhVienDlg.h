@@ -54,4 +54,10 @@ public:
 	afx_msg void OnBnClickedSaveeditBtn();
 	void ResetControl();
 	afx_msg void OnBnClickedTimkiemmhBtn();
+	afx_msg void OnBnClickedSuadiemBtn();
+	afx_msg void OnBnClickedRefreshBtn();
+	afx_msg void OnBnClickedXoadiemBtn();
+	afx_msg void OnLvnItemchangedDiemsvListcrl(NMHDR* pNMHDR, LRESULT* pResult);
+	CButton m_suadiem_ctrl;
+	CButton m_xoadiem_ctrl;
 };

@@ -185,6 +185,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddNewDiemDlg.h" />
     <ClInclude Include="DanhSachSinhVienTheoKhoa.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainWnd.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddNewDiemDlg.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="DanhSachSinhVienTheoKhoa.cpp" />
     <ClCompile Include="MainWnd.cpp" />

@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "MFC_QLDSV.h"
 #include "MFC_ViewSinhVienDlg.h"
+#include "AddNewDiemDlg.h"
 #include "afxdialogex.h"
 #include <sql.h>    
 #include <sqltypes.h> 
@@ -28,8 +29,8 @@ MFC_ViewSinhVien::MFC_ViewSinhVien(CWnd* pParent /*=nullptr*/)
 	, m_hotensv_val(_T(""))
 {
 	TRY{
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -63,6 +64,8 @@ void MFC_ViewSinhVien::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MSSV_TXT, m_mssv_ctrl);
 	DDX_Control(pDX, IDC_POBSV_TXT, m_pobsv_ctrl);
 	DDX_Control(pDX, IDC_SDTSV_TXT, m_sdtsv_ctrl);
+	DDX_Control(pDX, IDC_SUADIEM_BTN, m_suadiem_ctrl);
+	DDX_Control(pDX, IDC_XOADIEM_BTN, m_xoadiem_ctrl);
 }
 
 
@@ -72,6 +75,10 @@ BEGIN_MESSAGE_MAP(MFC_ViewSinhVien, CDialogEx)
 	ON_BN_CLICKED(IDC_EDITSV_BTN, &MFC_ViewSinhVien::OnBnClickedEditsvBtn)
 	ON_BN_CLICKED(IDC_SAVEEDIT_BTN, &MFC_ViewSinhVien::OnBnClickedSaveeditBtn)
 	ON_BN_CLICKED(IDC_TIMKIEMMH_BTN, &MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn)
+	ON_BN_CLICKED(IDC_SUADIEM_BTN, &MFC_ViewSinhVien::OnBnClickedSuadiemBtn)
+	ON_BN_CLICKED(IDC_REFRESH_BTN, &MFC_ViewSinhVien::OnBnClickedRefreshBtn)
+	ON_BN_CLICKED(IDC_XOADIEM_BTN, &MFC_ViewSinhVien::OnBnClickedXoadiemBtn)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DIEMSV_LISTCRL, &MFC_ViewSinhVien::OnLvnItemchangedDiemsvListcrl)
 END_MESSAGE_MAP()
 
 void MFC_ViewSinhVien::SetMSSV(CString maSoSinhVien) {
@@ -168,6 +175,9 @@ void MFC_ViewSinhVien::LoadThongTinSinhVien(CString mssv) {
 }
 void MFC_ViewSinhVien::OnBnClickedThemdiemBtn()
 {
+	AddNewDiemDlg dlg;
+	dlg.setMSSV(m_mssv_val);
+	dlg.DoModal();
 	
 }
 
@@ -244,14 +254,13 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 
 	UpdateData(TRUE);
 	TRY{
-		database.Open(NULL,false,false,sDsn);
-
+	
 		CString findQuery;
-		CString strMaMonHoc, strTenMonHoc, strMaLop,strTenLop, strNgayBatDau, strNgayKetThuc, diem;
+		CString strMaMonHoc, strTenMonHoc, strMaLop,strTenLop, strNgayBatDau, strNgayKetThuc, diemtb, diemqt, diemgk, diemck;
 	
 		CRecordset recsetMonHoc(&database);
 
-		findQuery.Format(_T("select TENMH, kq.MALOP as MALOP,TENLOP,DIEM, NGAYBATDAU, NGAYKETTHUC from SinhVien sv inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s' and TENMH LIKE N'%s'"),mssv,m_timkiemdiem_ctrl);
+		findQuery.Format(_T("select TENMH, kq.MALOP as MALOP, DIEM, DIEMQT, DIEMGK, DIEMCK, NGAYBATDAU, NGAYKETTHUC from SinhVien sv inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s' and TENMH LIKE N'%s'"),mssv,m_timkiemdiem_ctrl);
 
 		recsetMonHoc.Open(CRecordset::forwardOnly, findQuery, CRecordset::readOnly);
 
@@ -262,7 +271,10 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 			recsetMonHoc.GetFieldValue(L"TENMH", strTenMonHoc);
 			recsetMonHoc.GetFieldValue(L"MALOP", strMaLop);
 			recsetMonHoc.GetFieldValue(L"TENLOP", strTenLop);
-			recsetMonHoc.GetFieldValue(L"DIEM", diem);
+			recsetMonHoc.GetFieldValue(L"DIEM", diemtb);
+			recsetMonHoc.GetFieldValue(L"DIEMQT", diemqt);
+			recsetMonHoc.GetFieldValue(L"DIEMGK", diemgk);
+			recsetMonHoc.GetFieldValue(L"DIEMCK", diemck);
 			recsetMonHoc.GetFieldValue(L"NGAYBATDAU", strNgayBatDau);
 			recsetMonHoc.GetFieldValue(L"NGAYKETTHUC", strNgayKetThuc);
 
@@ -270,9 +282,12 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 			iDiem = m_danhsachdiemsv_listctrl.InsertItem(0, strTenMonHoc);
 			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 1, strMaLop);
 			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 2, strTenLop);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 3, diem);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 4, strNgayBatDau);
-			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 5, strNgayKetThuc);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 3, diemqt);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 4, diemgk);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 5, diemck);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 6, diemtb);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 7, strNgayBatDau);
+			m_danhsachdiemsv_listctrl.SetItemText(iDiem, 8, strNgayKetThuc);
 			//Move next
 			recsetMonHoc.MoveNext();
 
@@ -281,4 +296,51 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 	} END_CATCH
+}
+
+
+void MFC_ViewSinhVien::OnBnClickedSuadiemBtn()
+{
+	AddNewDiemDlg dlg;
+	dlg.setMSSV(m_mssv_val);
+	dlg.DoModal();
+}
+
+void MFC_ViewSinhVien::OnBnClickedXoadiemBtn()
+{
+	int rowSelected = m_danhsachdiemsv_listctrl.GetSelectionMark();
+	CString malop = m_danhsachdiemsv_listctrl.GetItemText(rowSelected, 1);
+	AfxMessageBox(L"Xác nhận xoá điểm?", MB_YESNO| MB_ICONWARNING);
+	if (IDYES) {
+		TRY{
+			CString deleteQuery;
+			deleteQuery.Format(_T("DELETE FROM KETQUA WHERE MASSV = '%s' AND MALOP = '%s'"),mssv, malop);
+			database.ExecuteSQL(deleteQuery);
+			LoadThongTinSinhVien(mssv);
+		} 
+		CATCH(CDBException, e) {
+			AfxMessageBox(L"Xảy ra lỗi trong quá trình xoá điểm SV");
+		} END_CATCH
+	}
+	else if (IDNO) {
+
+	}
+}
+
+
+void MFC_ViewSinhVien::OnBnClickedRefreshBtn()
+{
+	LoadThongTinSinhVien(mssv);
+}
+
+
+
+
+void MFC_ViewSinhVien::OnLvnItemchangedDiemsvListcrl(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+	m_suadiem_ctrl.EnableWindow(TRUE);
+	m_xoadiem_ctrl.EnableWindow(TRUE);
 }

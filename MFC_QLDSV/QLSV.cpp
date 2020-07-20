@@ -32,8 +32,8 @@ QLSV::QLSV(CWnd* pParent /*=nullptr*/)
 	, m_nienkhoa_val(_T(""))
 {
 	TRY{
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -67,6 +67,8 @@ void QLSV::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(QLSV, CDialogEx)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DSSV_LISTCTRL, &QLSV::OnLvnItemchangedDssvListctrl)
+	ON_BN_CLICKED(IDC_XOASV_BTN, &QLSV::OnBnClickedXoasvBtn)
 END_MESSAGE_MAP()
 
 
@@ -76,13 +78,29 @@ END_MESSAGE_MAP()
 BOOL QLSV::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	LoadDanhSachSinhVien();
+	ListView_SetExtendedListViewStyle(m_dssv_listctrl, LVS_EX_GRIDLINES);
+	m_dssv_listctrl.SetExtendedStyle(m_dssv_listctrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+	//column width and heading
+	m_dssv_listctrl.InsertColumn(0, L"MSSV", LVCFMT_CENTER, 80);
+	m_dssv_listctrl.InsertColumn(1, L"Họ Tên", LVCFMT_CENTER, 100);
+	m_dssv_listctrl.InsertColumn(2, L"Ngày sinh", LVCFMT_CENTER, 80);
+	m_dssv_listctrl.InsertColumn(3, L"Nơi sinh", LVCFMT_CENTER, 80);
+	m_dssv_listctrl.InsertColumn(4, L"Khoa", LVCFMT_CENTER, 80);
+	m_dssv_listctrl.InsertColumn(5, L"Lớp sv", LVCFMT_CENTER, 150);
+	m_dssv_listctrl.InsertColumn(6, L"Email", LVCFMT_LEFT, 100);
+	m_dssv_listctrl.InsertColumn(7, L"ĐiểmTB", LVCFMT_LEFT, 80);
+	return TRUE;  // return TRUE unless you set the focus to a control
+					  // EXCEPTION: OCX Property Pages should return FALSE
+}
+void QLSV::LoadDanhSachSinhVien() {
 	TRY{
 		CString selectQuery;
-		CString strMSSV, strMaLop, strHoTen, strNgaySinh,strMonHoc,diem, strTenKhoa, strEmail, strSDT, strNoiSinh, strNgayBatDau, strNgayKetThuc, diemqt, diemgk, diemck;
+		CString mssv, hoten, ngaysinh, noisinh, tenkhoa, email, sdt, cmnd, address1, address2, nienkhoa, lopsv, avatar,diemtb;
 
-		selectQuery.Format(_T("select MSSV, HOTEN, NGAYSINH, NOISINH, TENKHOA,TENMH, kq.MALOP as MALOP,DIEM,EMAIL,SDT,NGAYBATDAU, NGAYKETTHUC,DIEMQT,DIEMGK,DIEMCK"
-			"from SinhVien sv inner join Khoa k on sv.makhoa = k.makhoa inner join KetQua kq on sv.mssv = kq.massv"
-			"inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '4201104001'"));
+		selectQuery.Format(_T("select mssv, hoten, ngaysinh, noisinh, tenkhoa, email,"
+								"sdt, cmnd, address1, address2, nienkhoa, lopsv, avatar,diemtb " 
+								"from sinhvien sv inner join khoa k on sv.makhoa = k.makhoa "));
 
 		CRecordset recset(&database);
 
@@ -91,39 +109,69 @@ BOOL QLSV::OnInitDialog()
 		//reset content of listcontrol
 		m_dssv_listctrl.DeleteAllItems();
 
-		int iDiemMonHoc = 0;
+		int iSinhVien = 0;
 
 		//loop all the row result
 		while (!recset.IsEOF()) { //EOF: end of file
-			recset.GetFieldValue(L"MSSV", strMSSV);
-			recset.GetFieldValue(L"HOTEN", strHoTen);
-			recset.GetFieldValue(L"NGAYSINH", strNgaySinh);
-			recset.GetFieldValue(L"NOISINH", strNoiSinh);
-			recset.GetFieldValue(L"TENKHOA", strTenKhoa);
-			recset.GetFieldValue(L"LOP", strMonHoc);
-			recset.GetFieldValue(L"NIENKHOA", strMaLop);
-			recset.GetFieldValue(L"EMAIL", strEmail);
-			recset.GetFieldValue(L"SDT",strSDT);
-			recset.GetFieldValue(L"DTB", strSDT);
-
+			recset.GetFieldValue(L"mssv", mssv);
+			recset.GetFieldValue(L"hoten", hoten);
+			recset.GetFieldValue(L"ngaysinh", ngaysinh);
+			recset.GetFieldValue(L"noisinh", noisinh);
+			recset.GetFieldValue(L"tenkhoa", tenkhoa);
+			recset.GetFieldValue(L"email", email);
+			recset.GetFieldValue(L"sdt",sdt);
+			recset.GetFieldValue(L"cmnd", cmnd);
+			recset.GetFieldValue(L"address1", address1);
+			recset.GetFieldValue(L"address2", address2);
+			recset.GetFieldValue(L"nienkhoa", nienkhoa);
+			recset.GetFieldValue(L"lopsv", lopsv);
+			recset.GetFieldValue(L"avatar", avatar);
+			recset.GetFieldValue(L"diemtb", diemtb);
+			
 			//insert value into list record
-			iDiemMonHoc = m_dssv_listctrl.InsertItem(0, strMonHoc);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 1, strMaLop);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 2, diemqt);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 3, diemgk);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 4, diemck);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 5, diem);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 6, strNgayBatDau);
-			m_dssv_listctrl.SetItemText(iDiemMonHoc, 7, strNgayKetThuc);
+			iSinhVien = m_dssv_listctrl.InsertItem(0, mssv);
+			m_dssv_listctrl.SetItemText(iSinhVien, 1, hoten);
+			m_dssv_listctrl.SetItemText(iSinhVien, 2, ngaysinh);
+			m_dssv_listctrl.SetItemText(iSinhVien, 3, noisinh);
+			m_dssv_listctrl.SetItemText(iSinhVien, 4, tenkhoa);
+			m_dssv_listctrl.SetItemText(iSinhVien, 5, lopsv);
+			m_dssv_listctrl.SetItemText(iSinhVien, 6, email);
+			m_dssv_listctrl.SetItemText(iSinhVien, 7, diemtb);
 			//Move next
 			recset.MoveNext();
-		}		
+		}
 		UpdateData(FALSE);
 		recset.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error:danh sach diem sinh vien " + e->m_strError);
 	} END_CATCH
-	
-	return TRUE;  // return TRUE unless you set the focus to a control
-				  // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void QLSV::OnLvnItemchangedDssvListctrl(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
+}
+
+void QLSV::OnBnClickedXoasvBtn()
+{
+	int rowSelected = m_dssv_listctrl.GetSelectionMark();
+	CString massv = m_dssv_listctrl.GetItemText(rowSelected, 0);
+	AfxMessageBox(L"Xác nhận xoá sinh viên?", MB_YESNO | MB_ICONWARNING);
+	if (IDYES) {
+		TRY{
+			CString deleteQuery;
+			deleteQuery.Format(_T("DELETE FROM SINHVIEN WHERE MSSV = '%s'"), massv);
+			database.ExecuteSQL(deleteQuery);
+			LoadDanhSachSinhVien();
+		}
+			CATCH(CDBException, e) {
+			AfxMessageBox(L"Xảy ra lỗi trong quá trình xoá Sinh Viên:"+ e->m_strError);
+		} END_CATCH
+	}
+	else if (IDNO) {
+
+	}
+
 }

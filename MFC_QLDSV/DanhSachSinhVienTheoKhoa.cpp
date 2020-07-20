@@ -30,8 +30,8 @@ DanhSachSinhVienTheoKhoa::DanhSachSinhVienTheoKhoa(CWnd* pParent /*=nullptr*/)
 	, m_pathfile_val(_T(""))
 {
 	TRY{
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -398,10 +398,11 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedXemBtn()
 
 //tim kiem theo mssv
 void DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn()
-{
+{	
+	m_dssv_listctrl.DeleteAllItems();
 	UpdateData(TRUE);
 	TRY{
-		database.Open(NULL,false,false,sDsn);
+		//database.Open(NULL,false,false,sDsn);
 		
 		CString findQuery;
 		CString strMSSV, strHoTen, strNgaySinh, strTenKhoa; 
@@ -430,6 +431,7 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedTimkiemsvBtn()
 
 		}
 		recsetSV.Close();
+		m_xemchitiet_ctrl.EnableWindow(TRUE);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 	} END_CATCH
@@ -480,14 +482,16 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 		AfxMessageBox(L"Không tìm thấy Driver Excel");
 		return;
 	}
-	
+
 	sDsn.Format(L"ODBC;DRIVER={%s};DSN='';DBQ=%s", sDriver, sFile);
 	TRY{
 		//database.Open(NULL, false, false, sDsn);
 
-		CString sqlQuery;
+		CString sqlQuery,insertQuery;
 		sqlQuery = "SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM "
 					"FROM KETQUA";
+		float diemtb, diemqt, diemgk, diemck;
+		
 		CString strMSSV, strMaLop, strDiemQT, strDiemGK, strDiemCK, strDiem;
 
 		CRecordset recsetKQ(&database);
@@ -505,17 +509,26 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 			recsetKQ.GetFieldValue(L"DIEM", strDiem);
 
 			//insert value into list record
-			iSinhVien = m_dssv_listctrl.InsertItem(0, strMSSV);
+			/*iSinhVien = m_dssv_listctrl.InsertItem(0, strMSSV);
 			m_dssv_listctrl.SetItemText(iSinhVien, 1, strMaLop);
 			m_dssv_listctrl.SetItemText(iSinhVien, 2, strDiemQT);
 			m_dssv_listctrl.SetItemText(iSinhVien, 3, strDiemGK);
 			m_dssv_listctrl.SetItemText(iSinhVien, 2, strDiemCK);
-			m_dssv_listctrl.SetItemText(iSinhVien, 3, strDiem);
+			m_dssv_listctrl.SetItemText(iSinhVien, 3, strDiem);*/
 			//Move next
-			recsetKQ.MoveNext();
+			
+			diemqt = _ttof(strDiemQT);
+			diemgk = _ttof(strDiemGK);
+			diemck = _ttof(strDiemCK);
+			diemtb = _ttof(strDiem);
+			
+			insertQuery.Format(_T("INSERT INTO KETQUA (massv, malop,diem, diemqt,diemgk,diemck) VALUES ('%s','%s','%f','%f','%f','%f')"), strMSSV, strMaLop, diemtb,diemqt,diemgk,diemck);
+			database.ExecuteSQL(insertQuery);
 
+			recsetKQ.MoveNext();
 		}
 		recsetKQ.Close();
+		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);
 		return;

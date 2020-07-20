@@ -39,4 +39,7 @@ public:
 	CString m_address2_val;
 	CString m_nienkhoa_val;
 	CListCtrl m_dssv_listctrl;
+	void LoadDanhSachSinhVien();
+	afx_msg void OnLvnItemchangedDssvListctrl(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedXoasvBtn();
 };
