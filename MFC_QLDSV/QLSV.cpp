@@ -161,9 +161,11 @@ void QLSV::OnBnClickedXoasvBtn()
 	AfxMessageBox(L"Xác nhận xoá sinh viên?", MB_YESNO | MB_ICONWARNING);
 	if (IDYES) {
 		TRY{
-			CString deleteQuery;
-			deleteQuery.Format(_T("DELETE FROM SINHVIEN WHERE MSSV = '%s'"), massv);
-			database.ExecuteSQL(deleteQuery);
+			CString deleteQuerySV, deleteQueryKQ;
+			deleteQueryKQ.Format(_T("DELETE FROM KETQUA WHERE MASSV = '%s'"), massv);
+			database.ExecuteSQL(deleteQueryKQ);
+			deleteQuerySV.Format(_T("DELETE FROM SINHVIEN WHERE MSSV = '%s'"), massv);
+			database.ExecuteSQL(deleteQuerySV);
 			LoadDanhSachSinhVien();
 		}
 			CATCH(CDBException, e) {

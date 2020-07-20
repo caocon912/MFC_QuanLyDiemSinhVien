@@ -1,21 +1,2 @@
-﻿  AddNewDiemDlg.cpp
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\AddNewDiemDlg.cpp(65,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\AddNewDiemDlg.cpp(66,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\AddNewDiemDlg.cpp(67,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\AddNewDiemDlg.cpp(68,40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  DanhSachSinhVienTheoKhoa.cpp
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(213,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(214,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(215,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(216,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(454,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(520,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(521,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(522,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QLDSV\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(523,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  MFC_QLDSV.cpp
-  MFC_ViewSinhVienDlg.cpp
-  MainWnd.cpp
-  QLSV.cpp
-  Generating Code...
+﻿  QLSV.cpp
   MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QLDSV\x64\Debug\MFC_QLDSV.exe
