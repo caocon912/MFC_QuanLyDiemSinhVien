@@ -42,4 +42,9 @@ public:
 	void LoadDanhSachSinhVien();
 	afx_msg void OnLvnItemchangedDssvListctrl(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedXoasvBtn();
+	afx_msg void OnBnClickedThemsvBtn();
+	CString m_lopsv_val;
+	afx_msg void OnBnClickedSuasvBtn();
+	afx_msg void OnBnClickedEditsaveBtn();
+	CButton m_editsave_ctrl;
 };

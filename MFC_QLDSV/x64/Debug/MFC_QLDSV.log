@@ -1,2 +1,24 @@
-﻿  QLSV.cpp
-  MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QLDSV\x64\Debug\MFC_QLDSV.exe
+﻿  pch.cpp
+  AddNewDiemDlg.cpp
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(65,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(66,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(67,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(68,40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Common.cpp
+  DanhSachSinhVienTheoKhoa.cpp
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(213,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(214,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(215,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(216,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(454,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(520,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(521,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(522,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(523,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  MainWnd.cpp
+  MFC_QLDSV.cpp
+  MFC_ViewSinhVienDlg.cpp
+  QLSV.cpp
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(266,4): error C2065: 'm_': undeclared identifier
+G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(268,3): error C2143: syntax error: missing ';' before '}'
+  Generating Code...
