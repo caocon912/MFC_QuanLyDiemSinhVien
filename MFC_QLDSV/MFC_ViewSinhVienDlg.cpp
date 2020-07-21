@@ -301,8 +301,11 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 
 void MFC_ViewSinhVien::OnBnClickedSuadiemBtn()
 {
+	int rowSelected = m_danhsachdiemsv_listctrl.GetSelectionMark();
+	CString malop = m_danhsachdiemsv_listctrl.GetItemText(rowSelected, 1);
 	AddNewDiemDlg dlg;
 	dlg.setMSSV(m_mssv_val);
+	dlg.setMaLop(malop);
 	dlg.DoModal();
 }
 

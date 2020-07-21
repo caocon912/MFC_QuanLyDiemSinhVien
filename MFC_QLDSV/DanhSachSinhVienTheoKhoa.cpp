@@ -13,6 +13,8 @@
 #include "MFC_ViewSinhVienDlg.h"
 #include < wchar.h >
 #include <stdio.h>
+#include <vector> 
+using namespace std;
 // DanhSachSinhVienTheoKhoa dialog
 
 IMPLEMENT_DYNAMIC(DanhSachSinhVienTheoKhoa, CDialogEx)
@@ -475,17 +477,17 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 	
 	CString sDriver;
 	CString sFile = m_pathfile_val;
-
+	vector<CString> insertQueryVector;
 	sDriver = GetExcelDriver();
 
 	if (sDriver.IsEmpty()) {
 		AfxMessageBox(L"Không tìm thấy Driver Excel");
 		return;
 	}
-
+	CDatabase excelDB;
 	sDsn.Format(L"ODBC;DRIVER={%s};DSN='';DBQ=%s", sDriver, sFile);
 	TRY{
-		//database.Open(NULL, false, false, sDsn);
+		excelDB.Open(NULL, false, false, sDsn);
 
 		CString sqlQuery,insertQuery;
 		sqlQuery = "SELECT MSSV, MALOP, DIEMQT, DIEMGK, DIEMCK, DIEM "
@@ -494,7 +496,7 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 		
 		CString strMSSV, strMaLop, strDiemQT, strDiemGK, strDiemCK, strDiem;
 
-		CRecordset recsetKQ(&database);
+		CRecordset recsetKQ(&excelDB);
 
 		recsetKQ.Open(CRecordset::forwardOnly, sqlQuery, CRecordset::readOnly);
 
@@ -523,11 +525,15 @@ void DanhSachSinhVienTheoKhoa::OnBnClickedUploadfileBtn()
 			diemtb = _ttof(strDiem);
 			
 			insertQuery.Format(_T("INSERT INTO KETQUA (massv, malop,diem, diemqt,diemgk,diemck) VALUES ('%s','%s','%f','%f','%f','%f')"), strMSSV, strMaLop, diemtb,diemqt,diemgk,diemck);
-			database.ExecuteSQL(insertQuery);
+			insertQueryVector.push_back(insertQuery);
 
 			recsetKQ.MoveNext();
 		}
 		recsetKQ.Close();
+		//luu thong tin doc tu vector sang db
+		for (auto i = insertQueryVector.begin(); i != insertQueryVector.end(); ++i) {
+			database.ExecuteSQL(*i);
+		}
 		database.Close();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error: " + e->m_strError);

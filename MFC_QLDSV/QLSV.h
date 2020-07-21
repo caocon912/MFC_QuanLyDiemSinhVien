@@ -61,4 +61,15 @@ public:
 	CEdit m_nienkhoa_ctrl;
 	CEdit m_lopsv_ctrl;
 	afx_msg void OnBnClickedImgfileBtn();
+	afx_msg void OnBnClickedUploadfileBtn();
+	CString GetExcelDriver();
+	void UpdateDiemTrungBinh();
+	//void UpdateDiemTrungBinhMoiSV();
+	CButton m_editsv_ctrl;
+	afx_msg void OnBnClickedRefeshBtn();
+	CButton m_xoasv_btn;
+	afx_msg void OnBnClickedSubmitimportBtn();
+	CString m_importsv_val;
+	CButton m_submitimport_ctrl;
+	afx_msg void OnBnClickedInsvBtn();
 };

@@ -1,22 +1,24 @@
 ﻿  AddNewDiemDlg.cpp
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(65,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(66,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(67,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(68,40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(113,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(114,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(115,16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\AddNewDiemDlg.cpp(116,40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   DanhSachSinhVienTheoKhoa.cpp
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(213,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(214,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(215,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(216,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(454,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(520,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(521,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(217,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(218,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(456,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
 D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(522,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(523,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(524,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\DanhSachSinhVienTheoKhoa.cpp(525,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   MFC_QLDSV.cpp
   MFC_ViewSinhVienDlg.cpp
   MainWnd.cpp
   QLSV.cpp
-D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(397,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(415,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(432,14): warning C4244: 'initializing': conversion from 'INT_PTR' to 'int', possible loss of data
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\QLSV.cpp(557,18): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
   MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\x64\Debug\MFC_QLDSV.exe

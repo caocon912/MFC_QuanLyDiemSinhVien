@@ -14,6 +14,7 @@
 #define IDC_CURSOR1                     143
 #define IDD_DIALOG1                     144
 #define IDD_THEMDIEM_DLG                144
+#define IDD_CTDT_DLG                    147
 #define IDC_VIEWSV_LBL                  1000
 #define IDC_DIEMSV_LISTCRL              1001
 #define IDC_TENSV_LBL                   1002
@@ -83,7 +84,9 @@
 #define IDC_HOTEN_TXT                   1065
 #define IDC_                            1066
 #define IDC_INSV_BTN                    1066
+#define IDC_MALOP                       1066
 #define IDC_ADDRESS1_TXT                1067
+#define IDC_REFESH_BTN                  1068
 #define IDC_NIENKHOA_TXT                1069
 #define IDC_POB_TXT                     1070
 #define IDC_ADDESS2_TXT                 1071
@@ -101,20 +104,40 @@
 #define IDC_DIEMCK_LBL                  1085
 #define IDC_EDIT1                       1086
 #define IDC_MALOP_TXT                   1086
+#define IDC_MAMH_TXT                    1086
 #define IDC_DIEMQT_TXT                  1087
+#define IDC_TENMH_TXT                   1087
 #define IDC_DIEMGK_TXT                  1088
 #define IDC_DIEMCK_TXT                  1089
+#define IDC_TENLOP_TXT                  1089
+#define IDC_MAKHOA_TXT                  1090
 #define IDC_IMGFILE_BTN                 1091
+#define IDC_TENKHOA_TXT                 1091
 #define IDC_EDITSAVE_BTN                1092
 #define IDC_INKPICTURE1                 1093
+#define IDC_FIELD2_CBB                  1094
+#define IDC_LISTCTRL                    1095
+#define IDC_FILTER_BTN                  1096
+#define IDC_ADD_BTN                     1097
+#define IDC_KHOAMON_CBB                 1098
+#define IDC_SAVEMH_BTN                  1099
+#define IDC_LOPKHOA_CBB                 1100
+#define IDC_LOPMH_CBB                   1101
+#define IDC_DELETE_BTN                  1102
+#define IDC_SAVEKHOA_BTN                1103
+#define IDC_FIELD1_CBB                  1104
+#define IDC_EDIT_BTN                    1105
+#define IDC_BUTTON7                     1106
+#define IDC_SAVEMH_BTN2                 1107
+#define IDC_SAVELOP_BTN                 1107
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        147
+#define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1094
+#define _APS_NEXT_CONTROL_VALUE         1097
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

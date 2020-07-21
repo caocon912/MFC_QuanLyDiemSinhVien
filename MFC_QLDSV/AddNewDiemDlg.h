@@ -19,6 +19,7 @@ private:
 	CDatabase database;
 	CString sDsn;
 	CString mssv;
+	CString maLop;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
@@ -31,4 +32,7 @@ public:
 	CString m_diemck_val;
 	void setMSSV(CString maSoSV);
 	CString getMSSV();
+	void setMaLop(CString maLop);
+	CString getMaLop();
+	virtual BOOL OnInitDialog();
 };
