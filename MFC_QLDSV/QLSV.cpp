@@ -66,6 +66,17 @@ void QLSV::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DSSV_LISTCTRL, m_dssv_listctrl);
 	DDX_Text(pDX, IDC_LOPSV_TXT, m_lopsv_val);
 	DDX_Control(pDX, IDC_EDITSAVE_BTN, m_editsave_ctrl);
+	DDX_Control(pDX, IDC_MSSV_TXT, m_mssv_ctrl);
+	DDX_Control(pDX, IDC_HOTEN_TXT, m_hoten_ctrl);
+	DDX_Control(pDX, IDC_DOB_TXT, m_dob_ctrl);
+	DDX_Control(pDX, IDC_ADDRESS1_TXT, m_address1_ctrl);
+	DDX_Control(pDX, IDC_SDT_TXT, m_sdt_ctrl);
+	DDX_Control(pDX, IDC_EMAIL_TXT, m_email_ctrl);
+	DDX_Control(pDX, IDC_PWD_TXT, m_pwd_ctrl);
+	DDX_Control(pDX, IDC_POB_TXT, m_pob_ctrl);
+	DDX_Control(pDX, IDC_ADDESS2_TXT, m_address2_ctrl);
+	DDX_Control(pDX, IDC_NIENKHOA_TXT, m_nienkhoa_ctrl);
+	DDX_Control(pDX, IDC_LOPSV_TXT, m_lopsv_ctrl);
 }
 
 
@@ -75,6 +86,7 @@ BEGIN_MESSAGE_MAP(QLSV, CDialogEx)
 	ON_BN_CLICKED(IDC_THEMSV_BTN, &QLSV::OnBnClickedThemsvBtn)
 	ON_BN_CLICKED(IDC_SUASV_BTN, &QLSV::OnBnClickedSuasvBtn)
 	ON_BN_CLICKED(IDC_EDITSAVE_BTN, &QLSV::OnBnClickedEditsaveBtn)
+	ON_BN_CLICKED(IDC_IMGFILE_BTN, &QLSV::OnBnClickedImgfileBtn)
 END_MESSAGE_MAP()
 
 
@@ -84,7 +96,10 @@ END_MESSAGE_MAP()
 BOOL QLSV::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	LoadDanhSachSinhVien();
+	FillFilterDepartmentControl();
+	
+	m_khoacbb_ctrl.SetCurSel(0);
+
 	ListView_SetExtendedListViewStyle(m_dssv_listctrl, LVS_EX_GRIDLINES);
 	m_dssv_listctrl.SetExtendedStyle(m_dssv_listctrl.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 	//column width and heading
@@ -96,6 +111,8 @@ BOOL QLSV::OnInitDialog()
 	m_dssv_listctrl.InsertColumn(5, L"Lớp sv", LVCFMT_CENTER, 150);
 	m_dssv_listctrl.InsertColumn(6, L"Email", LVCFMT_LEFT, 100);
 	m_dssv_listctrl.InsertColumn(7, L"ĐiểmTB", LVCFMT_LEFT, 80);
+
+	LoadDanhSachSinhVien();
 	return TRUE;  // return TRUE unless you set the focus to a control
 					  // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -172,6 +189,7 @@ void QLSV::OnBnClickedXoasvBtn()
 			database.ExecuteSQL(deleteQueryKQ);
 			deleteQuerySV.Format(_T("DELETE FROM SINHVIEN WHERE MSSV = '%s'"), massv);
 			database.ExecuteSQL(deleteQuerySV);
+			AfxMessageBox(L"Đã xoá thông tin về sv");
 			LoadDanhSachSinhVien();
 		}
 			CATCH(CDBException, e) {
@@ -184,11 +202,34 @@ void QLSV::OnBnClickedXoasvBtn()
 
 }
 
+void QLSV::FillFilterDepartmentControl() {
+	//load du lieu len filter combobox khoa
+	CString strMaKhoa, strTenKhoa;
+	TRY{
+		CString selectQuery;
+		selectQuery.Format(_T("SELECT MAKHOA,TENKHOA FROM KHOA"));
+
+		CRecordset recsetKhoa(&database);
+
+		recsetKhoa.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
+
+		while (!recsetKhoa.IsEOF()) {
+			recsetKhoa.GetFieldValue(L"MAKHOA",strMaKhoa);
+			recsetKhoa.GetFieldValue(L"TENKHOA", strTenKhoa);
+
+			m_khoacbb_ctrl.AddString(strTenKhoa);
+			recsetKhoa.MoveNext();
+		}
+		recsetKhoa.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error combobox khoa: " + e->m_strError);
+	} END_CATCH
+}
 
 void QLSV::OnBnClickedThemsvBtn()
 {
 	UpdateData(TRUE);
-	CString mssv, hoten, ngaysinh, noisinh,tenkhoa, makhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv;
+	CString mssv, hoten, ngaysinh, noisinh,tenkhoa, makhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv, avatar;
 	mssv = m_mssv_val;
 	hoten = m_hoten_val;
 	ngaysinh = m_dob_val.Format(_T("%d/%m/%Y")); ;
@@ -202,6 +243,7 @@ void QLSV::OnBnClickedThemsvBtn()
 	email = m_email_val;
 	lopsv = m_lopsv_val;
 	float diemtb = 0;
+	avatar = "";
 	TRY{
 		CString selectKhoaQuery;
 		selectKhoaQuery.Format(_T("SELECT MAKHOA, TENKHOA FROM KHOA WHERE TENKHOA = N'%s'"), tenkhoa);
@@ -215,9 +257,13 @@ void QLSV::OnBnClickedThemsvBtn()
 		recset.Close();
 
 		CString insertSVQuery;
-		insertSVQuery.Format(_T("INSERT INTO SINHVIEN VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%f);"), mssv, hoten, ngaysinh, noisinh, makhoa, address1, address2, cmnd,sdt,email,nienkhoa, lopsv,diemtb);
+		
+		insertSVQuery.Format(_T("INSERT INTO SINHVIEN VALUES(N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',N'%s',%f);"), mssv, hoten, ngaysinh, noisinh, makhoa,email,sdt,cmnd, address1, address2, nienkhoa, lopsv,avatar, diemtb);
 
 		database.ExecuteSQL(insertSVQuery);
+		AfxMessageBox(L"Đã thêm thông tin sv");
+		LoadDanhSachSinhVien();
+		ResetControl();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(e->m_strError);
 	}END_CATCH
@@ -226,12 +272,14 @@ void QLSV::OnBnClickedThemsvBtn()
 
 void QLSV::OnBnClickedSuasvBtn()
 {
+	
 	int rowSelected = m_dssv_listctrl.GetSelectionMark();
 	CString massv = m_dssv_listctrl.GetItemText(rowSelected, 0);
+	
 	CString selectQuery;
 	CString mssv, hoten, ngaysinh, noisinh, tenkhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv,diemtb;
 
-	selectQuery.Format(_T("SELECT MSSV, HOTEN,TENKHOA,NGAYSINH,NOISINH,ADDRESS1,ADDRESS2,CMND,SDT,EMAIL,NIENKHOA,LOPSV, AVATAR FROM SINHVIEN SV INNER JOIN KHOA K ON K.MAKHOA = SV.MAKHOA "));
+	selectQuery.Format(_T("SELECT MSSV, HOTEN,TENKHOA,NGAYSINH,NOISINH,ADDRESS1,ADDRESS2,CMND,SDT,EMAIL,NIENKHOA,LOPSV, AVATAR FROM SINHVIEN SV INNER JOIN KHOA K ON K.MAKHOA = SV.MAKHOA WHERE MSSV = '%s'"),massv);
 	 TRY{
 			CRecordset recsetSV(&database);
 
@@ -262,6 +310,20 @@ void QLSV::OnBnClickedSuasvBtn()
 			m_email_val = email;
 			m_nienkhoa_val = nienkhoa;
 			m_lopsv_val = lopsv;
+			//select value in combobox
+			CString tenkhoa_select;
+			int nCount = m_khoacbb_ctrl.GetCount();
+			
+			for (int i = 0; i < nCount; i++) {
+				m_khoacbb_ctrl.GetLBText(m_khoacbb_ctrl.GetCurSel(), tenkhoa_select);
+				if (tenkhoa_select != tenkhoa) {
+					m_khoacbb_ctrl.SetCurSel(i);
+				}
+				else {
+					m_khoacbb_ctrl.SetCurSel(i);
+					break;
+				}
+			}
 			
 			UpdateData(FALSE);
 			m_editsave_ctrl.EnableWindow(TRUE);
@@ -278,7 +340,7 @@ void QLSV::OnBnClickedEditsaveBtn()
 	UpdateData(TRUE);
 	TRY{
 		CString updateQuery, selectKhoaQuery;
-		CString mssv, hoten, ngaysinh, noisinh, makhoa, tenkhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv, diemtb;
+		CString mssv, hoten, ngaysinh, noisinh, makhoa, tenkhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv,avatar, diemtb;
 
 		mssv = m_mssv_val;
 		hoten = m_hoten_val;
@@ -291,7 +353,8 @@ void QLSV::OnBnClickedEditsaveBtn()
 		address1 = m_address1_val;
 		address2 = m_address2_val;
 		lopsv = m_lopsv_val;
-
+		avatar = "";
+		nienkhoa = m_nienkhoa_val;
 
 		selectKhoaQuery.Format(_T("SELECT MAKHOA, TENKHOA FROM KHOA WHERE TENKHOA = N'%s'"),tenkhoa);
 
@@ -304,11 +367,41 @@ void QLSV::OnBnClickedEditsaveBtn()
 		recset.Close();
 
 		//cap nhat thay doi thong tin sinh vien, ket qua
-		//updateQuery.Format(L"UPDATE SinhVien SET makhoa =N'%s' ,hoten =N'%s' , ngaysinh ='%s' , email ='%s' ,noisinh = '%s',sdt = '%s' WHERE MSSV = '%s'", strMaKhoa, strHoTen, strNgaySinh, strEmail, strNoiSinh, strSDT, strMSSV);
+		updateQuery.Format(L"UPDATE SinhVien SET HOTEN = N'%s',NGAYSINH ='%s',NOISINH = N'%s', MAKHOA = '%s', EMAIL = '%s', SDT = '%s', CMND = '%s',ADDRESS1 =N'%s', ADDRESS2 =N'%s',NIENKHOA ='%s',LOPSV = N'%s',AVATAR = '%s' WHERE  MSSV = '%s'", hoten, ngaysinh, noisinh, makhoa, email, sdt, cmnd, address1, address2, nienkhoa, lopsv, avatar, mssv);
 		database.ExecuteSQL(updateQuery);
-
-		//ResetControl();
+		AfxMessageBox(L"Đã sửa thông tin sinh viên");
+		LoadDanhSachSinhVien();
+		ResetControl();
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Database error:danh sach diem sinh vien " + e->m_strError);
 	} END_CATCH
+}
+void QLSV ::ResetControl() {
+	m_mssv_ctrl.SetWindowText(L"");
+	m_hoten_ctrl.SetWindowText(L"");
+	m_pob_ctrl.SetWindowText(L"");
+	m_address1_ctrl.SetWindowText(L"");
+	m_address2_ctrl.SetWindowText(L"");
+	m_cmnd_ctrl.SetWindowText(L"");
+	m_sdt_ctrl.SetWindowText(L"");
+	m_email_ctrl.SetWindowText(L"");
+	m_nienkhoa_ctrl.SetWindowText(L"");
+	m_lopsv_ctrl.SetWindowText(L"");
+	m_editsave_ctrl.EnableWindow(FALSE);
+}
+
+
+void QLSV::OnBnClickedImgfileBtn()
+{
+	CFileDialog l_fDlg(TRUE);
+	int fileDlg = l_fDlg.DoModal();
+	CString strFile;
+
+	if (fileDlg == IDOK) {
+		strFile = l_fDlg.GetPathName();
+	}
+	if (strFile.IsEmpty()) {
+		AfxMessageBox(L"File chưa hợp lệ!Thử lại");
+		return;
+	}
 }

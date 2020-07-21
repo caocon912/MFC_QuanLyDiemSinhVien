@@ -29,8 +29,8 @@ MFC_ViewSinhVien::MFC_ViewSinhVien(CWnd* pParent /*=nullptr*/)
 	, m_hotensv_val(_T(""))
 {
 	TRY{
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -260,7 +260,7 @@ void MFC_ViewSinhVien::OnBnClickedTimkiemmhBtn()
 	
 		CRecordset recsetMonHoc(&database);
 
-		findQuery.Format(_T("select TENMH, kq.MALOP as MALOP, DIEM, DIEMQT, DIEMGK, DIEMCK, NGAYBATDAU, NGAYKETTHUC from SinhVien sv inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s' and TENMH LIKE N'%s'"),mssv,m_timkiemdiem_ctrl);
+		findQuery.Format(_T("select TENMH, kq.MALOP as MALOP, TENLOP, DIEM, DIEMQT, DIEMGK, DIEMCK, NGAYBATDAU, NGAYKETTHUC from SinhVien sv inner join KetQua kq on sv.mssv = kq.massv inner join(select mh.mamh, TENMH, MALOP, TENLOP, NGAYBATDAU, NGAYKETTHUC from lop lp inner join monhoc mh on mh.mamh = lp.mamh) tmp on kq.malop = tmp.malop where mssv = '%s' and TENMH LIKE N'%s'"),mssv,m_timkiemdiem_ctrl);
 
 		recsetMonHoc.Open(CRecordset::forwardOnly, findQuery, CRecordset::readOnly);
 

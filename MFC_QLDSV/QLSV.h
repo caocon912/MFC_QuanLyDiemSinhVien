@@ -47,4 +47,18 @@ public:
 	afx_msg void OnBnClickedSuasvBtn();
 	afx_msg void OnBnClickedEditsaveBtn();
 	CButton m_editsave_ctrl;
+	void FillFilterDepartmentControl();
+	void ResetControl();
+	CEdit m_mssv_ctrl;
+	CEdit m_hoten_ctrl;
+	CDateTimeCtrl m_dob_ctrl;
+	CEdit m_address1_ctrl;
+	CEdit m_sdt_ctrl;
+	CEdit m_email_ctrl;
+	CEdit m_pwd_ctrl;
+	CEdit m_pob_ctrl;
+	CEdit m_address2_ctrl;
+	CEdit m_nienkhoa_ctrl;
+	CEdit m_lopsv_ctrl;
+	afx_msg void OnBnClickedImgfileBtn();
 };
