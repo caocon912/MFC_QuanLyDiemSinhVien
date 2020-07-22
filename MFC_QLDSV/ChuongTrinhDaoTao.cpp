@@ -32,8 +32,8 @@ ChuongTrinhDaoTao::ChuongTrinhDaoTao(CWnd* pParent /*=nullptr*/)
 	malop = "";
 	tenlop = "";
 	TRY{
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -198,15 +198,14 @@ void ChuongTrinhDaoTao::OnBnClickedAddmhBtn(){
 
 void ChuongTrinhDaoTao::OnBnClickedEditmhBtn()
 {
-	//UpdateData(FALSE);
 	m_mamh_ctrl.EnableWindow(FALSE);
 	m_savemh_ctrl.EnableWindow(TRUE);
 	int rowSelected = m_listctrl.GetSelectionMark();
 	CString maMonHoc = m_listctrl.GetItemText(rowSelected, 0);
 	CString tenMonHoc = m_listctrl.GetItemText(rowSelected, 1);
 	CString tenKhoa = m_listctrl.GetItemText(rowSelected, 2);
+
 	int x = m_khoacbb_ctrl.SelectString(0, tenKhoa);
-	m_khoacbb_ctrl.SetCurSel(x);
 	m_mamh_val = maMonHoc;
 	m_tenmh_val = tenMonHoc;
 	m_savemh_ctrl.EnableWindow(TRUE);
@@ -253,7 +252,7 @@ void ChuongTrinhDaoTao::OnBnClickedSavemhBtn()
 		database.ExecuteSQL(updateQuery);
 		AfxMessageBox(L"Đã sửa thông tin môn học");
 		m_savemh_ctrl.EnableWindow(FALSE);
-		m_mamh_ctrl.EnableWindow(FALSE);
+		m_mamh_ctrl.EnableWindow(TRUE);
 	}CATCH(CDBException, e) {
 		AfxMessageBox(e->m_strError);
 	}END_CATCH

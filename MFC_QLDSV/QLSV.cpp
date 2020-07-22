@@ -35,8 +35,8 @@ QLSV::QLSV(CWnd* pParent /*=nullptr*/)
 	, m_importsv_val(_T(""))
 {
 	TRY{
-		sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
-		//sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
+		//sDsn.Format(L"DRIVER={SQL Server};SERVER=SM89\\SQLEXPRESS12;DATABASE=QLDSV;UID=sa;PWD=123;");
+		sDsn.Format(L"DRIVER={SQL Server};SERVER=DESKTOP-8RB0FH7;DATABASE=QLDSV");
 		database.Open(NULL, false, false, sDsn);
 	} CATCH(CDBException, e) {
 		AfxMessageBox(L"Lỗi kết nối DB:" + e->m_strError);
@@ -287,7 +287,29 @@ void QLSV::OnBnClickedThemsvBtn()
 	}
 }
 
+void QLSV::FillDepartmentControl(){
+	//load du lieu len filter combobox khoa
+	CString strMaKhoa, strTenKhoa;
+	TRY{
+		CString selectQuery;
+		selectQuery.Format(_T("SELECT MAKHOA,TENKHOA FROM KHOA"));
 
+		CRecordset recsetKhoa(&database);
+
+		recsetKhoa.Open(CRecordset::forwardOnly, selectQuery, CRecordset::readOnly);
+
+		while (!recsetKhoa.IsEOF()) {
+			recsetKhoa.GetFieldValue(L"MAKHOA",strMaKhoa);
+			recsetKhoa.GetFieldValue(L"TENKHOA", strTenKhoa);
+
+			m_khoacbb_ctrl.AddString(strTenKhoa);
+			recsetKhoa.MoveNext();
+		}
+		recsetKhoa.Close();
+	} CATCH(CDBException, e) {
+		AfxMessageBox(L"Database error combobox khoa: " + e->m_strError);
+	} END_CATCH
+}
 void QLSV::OnBnClickedSuasvBtn()
 {
 	
@@ -330,21 +352,9 @@ void QLSV::OnBnClickedSuasvBtn()
 			m_nienkhoa_val = nienkhoa;
 			m_lopsv_val = lopsv;
 			m_pwd_val = diemtb;
-			//select value in combobox
-			CString tenkhoa_select;
-			int nCount = m_khoacbb_ctrl.GetCount();
 			
-			for (int i = 0; i < nCount; i++) {
-				m_khoacbb_ctrl.GetLBText(m_khoacbb_ctrl.GetCurSel(), tenkhoa_select);
-				if (tenkhoa_select != tenkhoa) {
-					m_khoacbb_ctrl.SetCurSel(i);
-				}
-				else {
-					m_khoacbb_ctrl.SetCurSel(i);
-					break;
-				}
-			}
-			
+			m_khoacbb_ctrl.SelectString(0,tenkhoa);
+
 			UpdateData(FALSE);
 			m_editsave_ctrl.EnableWindow(TRUE);
 
@@ -353,7 +363,6 @@ void QLSV::OnBnClickedSuasvBtn()
 	 }END_CATCH
 
 }
-
 
 void QLSV::OnBnClickedEditsaveBtn()
 {

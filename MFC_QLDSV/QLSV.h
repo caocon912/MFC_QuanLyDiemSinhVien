@@ -72,4 +72,5 @@ public:
 	CString m_importsv_val;
 	CButton m_submitimport_ctrl;
 	afx_msg void OnBnClickedInsvBtn();
+	void FillDepartmentControl();
 };
