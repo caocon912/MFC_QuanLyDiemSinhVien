@@ -186,6 +186,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddNewDiemDlg.h" />
+    <ClInclude Include="ChuongTrinhDaoTao.h" />
     <ClInclude Include="DanhSachSinhVienTheoKhoa.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainWnd.h" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddNewDiemDlg.cpp" />
+    <ClCompile Include="ChuongTrinhDaoTao.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="DanhSachSinhVienTheoKhoa.cpp" />
     <ClCompile Include="MainWnd.cpp" />

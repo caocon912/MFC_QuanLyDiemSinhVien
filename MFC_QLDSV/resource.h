@@ -119,17 +119,26 @@
 #define IDC_LISTCTRL                    1095
 #define IDC_FILTER_BTN                  1096
 #define IDC_ADD_BTN                     1097
+#define IDC_ADDLOP_BTN                  1097
 #define IDC_KHOAMON_CBB                 1098
 #define IDC_SAVEMH_BTN                  1099
 #define IDC_LOPKHOA_CBB                 1100
 #define IDC_LOPMH_CBB                   1101
 #define IDC_DELETE_BTN                  1102
+#define IDC_DELETELOP_BTN               1102
 #define IDC_SAVEKHOA_BTN                1103
 #define IDC_FIELD1_CBB                  1104
 #define IDC_EDIT_BTN                    1105
+#define IDC_EDITLOP_BTN                 1105
 #define IDC_BUTTON7                     1106
 #define IDC_SAVEMH_BTN2                 1107
 #define IDC_SAVELOP_BTN                 1107
+#define IDC_ADDKHOA_BTN                 1108
+#define IDC_DELETEKHOA_BTN              1109
+#define IDC_EDITKHOA_BTN                1111
+#define IDC_ADDMH_BTN                   1112
+#define IDC_EDITMH_BTN                  1113
+#define IDC_DELETEMH_BTN                1114
 
 // Next default values for new objects
 // 

@@ -23,4 +23,5 @@ protected:
 public:
 	afx_msg void OnBnClickedQlsvBtn();
 	afx_msg void OnBnClickedDsdiemBtn();
+	afx_msg void OnBnClickedCtdtBtn();
 };

@@ -48,6 +48,9 @@
     <ClInclude Include="AddNewDiemDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChuongTrinhDaoTao.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_QLDSV.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddNewDiemDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChuongTrinhDaoTao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

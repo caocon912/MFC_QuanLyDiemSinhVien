@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "DanhSachSinhVienTheoKhoa.h"
 #include "QLSV.h"
+#include "ChuongTrinhDaoTao.h"
 // MainWnd dialog
 
 IMPLEMENT_DYNAMIC(MainWnd, CDialogEx)
@@ -30,6 +31,7 @@ void MainWnd::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(MainWnd, CDialogEx)
 	ON_BN_CLICKED(IDC_QLSV_BTN, &MainWnd::OnBnClickedQlsvBtn)
 	ON_BN_CLICKED(IDC_DSDIEM_BTN, &MainWnd::OnBnClickedDsdiemBtn)
+	ON_BN_CLICKED(IDC_CTDT_BTN, &MainWnd::OnBnClickedCtdtBtn)
 END_MESSAGE_MAP()
 
 
@@ -49,4 +51,11 @@ void MainWnd::OnBnClickedDsdiemBtn()
 	// TODO: Add your control notification handler code here
 	DanhSachSinhVienTheoKhoa dsdDlg;
 	dsdDlg.DoModal();
+}
+
+
+void MainWnd::OnBnClickedCtdtBtn()
+{
+	ChuongTrinhDaoTao dlg;
+	dlg.DoModal();
 }
