@@ -79,6 +79,7 @@ BEGIN_MESSAGE_MAP(MFC_ViewSinhVien, CDialogEx)
 	ON_BN_CLICKED(IDC_REFRESH_BTN, &MFC_ViewSinhVien::OnBnClickedRefreshBtn)
 	ON_BN_CLICKED(IDC_XOADIEM_BTN, &MFC_ViewSinhVien::OnBnClickedXoadiemBtn)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DIEMSV_LISTCRL, &MFC_ViewSinhVien::OnLvnItemchangedDiemsvListcrl)
+	ON_EN_CHANGE(IDC_MSSV_TXT, &MFC_ViewSinhVien::OnEnChangeMssvTxt)
 END_MESSAGE_MAP()
 
 void MFC_ViewSinhVien::SetMSSV(CString maSoSinhVien) {
@@ -205,7 +206,7 @@ void MFC_ViewSinhVien::OnBnClickedEditsvBtn()
 	 m_hotensv_ctrl.EnableWindow(TRUE);
 	 m_dobsv_ctrl.EnableWindow(TRUE);
      m_emailsv_ctrl.EnableWindow(TRUE);
-	 m_mssv_ctrl.EnableWindow(TRUE);
+	 m_mssv_ctrl.EnableWindow(FALSE);
 	 m_pobsv_ctrl.EnableWindow(TRUE);
 	 m_sdtsv_ctrl.EnableWindow(TRUE);
 	 m_save_editsv_btn.EnableWindow(TRUE);
@@ -346,4 +347,15 @@ void MFC_ViewSinhVien::OnLvnItemchangedDiemsvListcrl(NMHDR* pNMHDR, LRESULT* pRe
 	*pResult = 0;
 	m_suadiem_ctrl.EnableWindow(TRUE);
 	m_xoadiem_ctrl.EnableWindow(TRUE);
+}
+
+
+void MFC_ViewSinhVien::OnEnChangeMssvTxt()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
 }

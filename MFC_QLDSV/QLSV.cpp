@@ -254,7 +254,7 @@ void QLSV::OnBnClickedThemsvBtn()
 	nienkhoa = m_nienkhoa_val;
 	email = m_email_val;
 	lopsv = m_lopsv_val;
-	float diemtb = 0;
+	float diemtb = _ttof(m_pwd_val);
 	avatar = "";
 	if (mssv == "" || hoten == "" || ngaysinh == "" || noisinh == "" || tenkhoa == "" || nienkhoa == "") {
 		AfxMessageBox(L"Nhập đầy đủ thông tin mssv, hoten,ngaysinh, noisinh,tenkhoa");
@@ -297,7 +297,7 @@ void QLSV::OnBnClickedSuasvBtn()
 	CString selectQuery;
 	CString mssv, hoten, ngaysinh, noisinh, tenkhoa, address1, address2, cmnd, sdt, nienkhoa, email, lopsv,diemtb;
 
-	selectQuery.Format(_T("SELECT MSSV, HOTEN,TENKHOA,NGAYSINH,NOISINH,ADDRESS1,ADDRESS2,CMND,SDT,EMAIL,NIENKHOA,LOPSV, AVATAR FROM SINHVIEN SV INNER JOIN KHOA K ON K.MAKHOA = SV.MAKHOA WHERE MSSV = '%s'"),massv);
+	selectQuery.Format(_T("SELECT MSSV, HOTEN,TENKHOA,NGAYSINH,NOISINH,ADDRESS1,ADDRESS2,CMND,SDT,EMAIL,NIENKHOA,LOPSV, AVATAR, DIEMTB FROM SINHVIEN SV INNER JOIN KHOA K ON K.MAKHOA = SV.MAKHOA WHERE MSSV = '%s'"),massv);
 	 TRY{
 			CRecordset recsetSV(&database);
 
@@ -315,6 +315,7 @@ void QLSV::OnBnClickedSuasvBtn()
 			recsetSV.GetFieldValue(L"EMAIL", email);
 			recsetSV.GetFieldValue(L"NIENKHOA", nienkhoa);
 			recsetSV.GetFieldValue(L"LOPSV", lopsv);
+			recsetSV.GetFieldValue(L"DIEMTB", diemtb);
 			recsetSV.Close();
 
 			m_mssv_val = mssv;
@@ -328,6 +329,7 @@ void QLSV::OnBnClickedSuasvBtn()
 			m_email_val = email;
 			m_nienkhoa_val = nienkhoa;
 			m_lopsv_val = lopsv;
+			m_pwd_val = diemtb;
 			//select value in combobox
 			CString tenkhoa_select;
 			int nCount = m_khoacbb_ctrl.GetCount();
@@ -385,7 +387,7 @@ void QLSV::OnBnClickedEditsaveBtn()
 		recset.Close();
 
 		//cap nhat thay doi thong tin sinh vien, ket qua
-		updateQuery.Format(L"UPDATE SinhVien SET HOTEN = N'%s',NGAYSINH ='%s',NOISINH = N'%s', MAKHOA = '%s', EMAIL = '%s', SDT = '%s', CMND = '%s',ADDRESS1 =N'%s', ADDRESS2 =N'%s',NIENKHOA ='%s',LOPSV = N'%s',AVATAR = '%s' WHERE  MSSV = '%s'", hoten, ngaysinh, noisinh, makhoa, email, sdt, cmnd, address1, address2, nienkhoa, lopsv, avatar, mssv);
+		updateQuery.Format(L"UPDATE SinhVien SET HOTEN = N'%s',NGAYSINH ='%s',NOISINH = N'%s', MAKHOA = '%s', EMAIL = '%s', SDT = '%s', CMND = '%s',ADDRESS1 =N'%s', ADDRESS2 =N'%s',NIENKHOA ='%s',LOPSV = N'%s',AVATAR = '%s',DIEMTB = %f WHERE  MSSV = '%s'", hoten, ngaysinh, noisinh, makhoa, email, sdt, cmnd, address1, address2, nienkhoa, lopsv, avatar,_ttof(m_pwd_val), mssv);
 		database.ExecuteSQL(updateQuery);
 		AfxMessageBox(L"Đã sửa thông tin sinh viên");
 		LoadDanhSachSinhVien();

@@ -1,2 +1,6 @@
 ﻿  ChuongTrinhDaoTao.cpp
-  MFC_QLDSV.vcxproj -> G:\LAP TRINH\c++ MFC\MFC_QuanLyDiemSinhVien\x64\Debug\MFC_QLDSV.exe
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\ChuongTrinhDaoTao.cpp(638,21): warning C4566: character represented by universal-character-name '\u00F4' cannot be represented in the current code page (932)
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\ChuongTrinhDaoTao.cpp(638,21): warning C4566: character represented by universal-character-name '\u1ECD' cannot be represented in the current code page (932)
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\ChuongTrinhDaoTao.cpp(671,21): warning C4566: character represented by universal-character-name '\u1EDB' cannot be represented in the current code page (932)
+D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\MFC_QLDSV\ChuongTrinhDaoTao.cpp(671,21): warning C4566: character represented by universal-character-name '\u1ECD' cannot be represented in the current code page (932)
+  MFC_QLDSV.vcxproj -> D:\lap trinh\C++Project\MFC_QuanLyDiemSinhVien\x64\Debug\MFC_QLDSV.exe

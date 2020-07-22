@@ -60,4 +60,5 @@ public:
 	afx_msg void OnLvnItemchangedDiemsvListcrl(NMHDR* pNMHDR, LRESULT* pResult);
 	CButton m_suadiem_ctrl;
 	CButton m_xoadiem_ctrl;
+	afx_msg void OnEnChangeMssvTxt();
 };

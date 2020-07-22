@@ -86,6 +86,7 @@
 #define IDC_INSV_BTN                    1066
 #define IDC_MALOP                       1066
 #define IDC_ADDRESS1_TXT                1067
+#define IDC_SOLUONG_TXT                 1067
 #define IDC_REFESH_BTN                  1068
 #define IDC_NIENKHOA_TXT                1069
 #define IDC_POB_TXT                     1070
@@ -108,6 +109,7 @@
 #define IDC_DIEMQT_TXT                  1087
 #define IDC_TENMH_TXT                   1087
 #define IDC_DIEMGK_TXT                  1088
+#define IDC_FIELD_SEARCH_TXT            1088
 #define IDC_DIEMCK_TXT                  1089
 #define IDC_TENLOP_TXT                  1089
 #define IDC_MAKHOA_TXT                  1090
@@ -135,10 +137,12 @@
 #define IDC_SAVELOP_BTN                 1107
 #define IDC_ADDKHOA_BTN                 1108
 #define IDC_DELETEKHOA_BTN              1109
+#define IDC_STARTDATE_PICKER            1110
 #define IDC_EDITKHOA_BTN                1111
 #define IDC_ADDMH_BTN                   1112
 #define IDC_EDITMH_BTN                  1113
 #define IDC_DELETEMH_BTN                1114
+#define IDC_ENDDATE_PICKER              1115
 
 // Next default values for new objects
 // 
@@ -146,7 +150,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1097
+#define _APS_NEXT_CONTROL_VALUE         1111
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
